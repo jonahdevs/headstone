@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\NotificationsController;
 use App\Http\Controllers\Backend\OrdersController;
 use App\Http\Controllers\Backend\PermissionsController;
 use App\Http\Controllers\Backend\QuotationsController;
+use App\Http\Controllers\Backend\ReportsController;
 use App\Http\Controllers\Backend\ReviewsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\TagsController;
@@ -48,7 +49,16 @@ Route::middleware(['auth', 'role:admin|manager'])->prefix('admin')->name('admin.
 
     Route::resource('reviews', ReviewsController::class);
     Route::resource('faqs', FaqsController::class);
-    Route::resource('notifications', controller: NotificationsController::class);
+    Route::controller(NotificationsController::class)->group(function () {
+        Route::get('notifications', 'index')->name('notifications');
+        Route::get('notifications/unread', 'unread')->name('notifications.unread');
+        Route::post('notifications/mark-as-read', 'markAsRead')->name('notifications.markAsRead');
+    });
+
+    Route::controller(ReportsController::class)->group(function () {
+        Route::get('reports/{resource?}', 'index')->name('reports');
+        Route::get('reports/{resource}/generate', 'generate')->name('reports.generate');
+    });
 });
 
 

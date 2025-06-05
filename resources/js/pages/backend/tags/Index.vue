@@ -108,7 +108,7 @@ onMounted(() => {
                     id="search"
                     type="text"
                     @input="applyFilters"
-                    placeholder="Search by user, name, email or id"
+                    placeholder="Search by name, slug or id"
                     class="w-full max-w-80 pl-8"
                     v-model="filters.search"
                 />

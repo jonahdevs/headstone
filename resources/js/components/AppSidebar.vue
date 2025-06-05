@@ -25,7 +25,6 @@ import {
     Landmark,
     LayoutGrid,
     LineChart,
-    Mail,
     ReceiptText,
     Shield,
     Star,
@@ -41,7 +40,7 @@ const currentUrl = page.url;
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
         icon: LayoutGrid,
     },
 ];
@@ -118,11 +117,6 @@ const links = {
             title: 'FAQs',
             href: '/admin/faqs',
             icon: HelpCircle,
-        },
-        {
-            title: 'Inbox',
-            href: '#',
-            icon: Mail,
         },
         {
             title: 'Notifications',

@@ -304,12 +304,12 @@ class MemorialSeeder extends Seeder
                 'title' => 'Upright Headstone',
                 'description' => 'A classic vertical gravestone made from polished granite, typically used to mark and identify individual graves. Upright headstones are popular for their visibility, elegance, and the space they offer for inscriptions, religious symbols, and portraits. Designed to withstand weather conditions in Kenya and preserve the memory of a loved one with dignity.',
                 'category_id' => Category::where('name', 'Upright Headstones')->first()->id,
-                'image' => 'headstones/uprightD1.png',
+                'image' => 'headstones/uprightD1.webp',
                 'images' => [
-                    'headstones/uprightD1.png',
-                    'headstones/uprightD2.png',
-                    'headstones/uprightD3.png',
-                    'headstones/uprightD4.png',
+                    'headstones/uprightD1.webp',
+                    'headstones/uprightD2.webp',
+                    'headstones/uprightD3.webp',
+                    'headstones/uprightD4.webp',
                 ],
                 'reviews' => [
                     [

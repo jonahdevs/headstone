@@ -3,17 +3,43 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Backend\Show\ShowTransactionResource;
+use App\Http\Resources\Backend\TransactionsResource;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransactionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filters = $request->only(['search', 'status']);
+
+        return Inertia::render('backend/transactions/Index', [
+            'filters' => $filters,
+            'transactions' => Inertia::defer(function () use ($filters) {
+                $transactionsQuery = Transaction::query();
+                $this->applySearch($transactionsQuery, $filters);
+
+                $transactions = TransactionsResource::collection($transactionsQuery->with('customer')->latest()->paginate(10)->appends($filters));
+                return $transactions;
+            }),
+        ]);
+    }
+
+    protected function applySearch($query, $filters)
+    {
+        return $query->when($filters['search'] ?? null, function (Builder $query, $search) {
+            $query->where(function (Builder $query) use ($search) {
+                $query->where('transaction_id', 'like', "%{$search}%")
+                    ->orWhereHas('customer', fn(Builder $query) => $query->where('email', 'like', "%{$search}%"));
+            });
+        })
+            ->when($filters['status'] ?? null, fn(Builder $query, $status) => $query->where('status', $status));
     }
 
     /**
@@ -37,7 +63,9 @@ class TransactionsController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        return Inertia::render('backend/transactions/Details', [
+            'transaction' => new ShowTransactionResource($transaction->load(['customer', 'order.memorials'])),
+        ]);
     }
 
     /**
@@ -61,6 +89,18 @@ class TransactionsController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $count = $transaction->delete();
+
+        $message = [
+            'type' => 'success',
+            'body' => 'Transaction Deleted successfully',
+        ];
+
+        $message = $count < 1 ?: [
+            'type' => 'error',
+            'body' => 'Something went wrong',
+        ];
+
+        return redirect()->route('admin.transactions.index')->with('message', $message);
     }
 }

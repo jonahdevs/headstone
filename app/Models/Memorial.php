@@ -124,24 +124,33 @@ class Memorial extends Model
 
     protected static function booted(): void
     {
-        static::created(function (self $memorial) {
+        static::creating(function (self $memorial) {
             $memorial->slug = $memorial->slug ?: Str::slug($memorial->title, '-');
             $memorial->published_on = $memorial->status === 'published' ? now() : null;
-            $memorial->created_by = $memorial->created_by ?: auth()->check();
-            $memorial->save();
+            $memorial->created_by = $memorial->created_by ?: auth()->id();
         });
 
-        static::updated(function (self $memorial) {
-            $memorial->slug = $memorial->isDirty('slug') ?: Str::slug($memorial->title, '-');
-            if ($memorial->isDirty('status') && $memorial->status === 'published') {
+        static::created(function (self $memorial) {
+            if (!$memorial->sku) {
+                $memorial->sku = 'MHS-' . date('Y') . '-' . $memorial->id;
+                $memorial->saveQuietly(); // Safe, as it bypasses events
+            }
+        });
+
+        static::updating(function (self $memorial) {
+            if ($memorial->isDirty('title') && !$memorial->isDirty('slug')) {
+                $memorial->slug = Str::slug($memorial->title, '-');
+            }
+
+            if ($memorial->isDirty('status') && $memorial->status === 'published' && $memorial->published_on === null) {
                 $memorial->published_on = now();
             }
-            $memorial->sku = $memorial->sku ?: 'MHS-' . date('Y') . '-' . $memorial->id;
-            $memorial->save();
         });
 
         static::deleting(function (self $memorial) {
             $memorial->deleted_by = auth()->id();
+
         });
     }
+
 }

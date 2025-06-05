@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+
+    @vite(['resources/css/app.css'])
+</head>
+
+<body>
+    <section class="bg-gradient-to-b from-white to-stone-200">
+        <div class="container mx-auto flex justify-between py-10">
+            <div class="flex flex-col gap-0">
+                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 90 112.5"
+                    style="enable-background:new 0 0 90 90;" xml:space="preserve">
+                    <path fill="brown"
+                        d="M80.2,80.7c-0.6-1-1.7-1.7-2.6-2c-1.5-0.4-3-0.1-4.5-0.1c-2.3,0-4.2-0.6-6.5-1c-1.5-0.3-3-0.2-4.5-0.2  c-2.5,0.1-5.1,1-7.5-0.1c-0.8-0.4-1.2-1-2.1-0.9c-1.1,0.1-2.1,0.5-3.2,0.5c-1.6,0.1-3.1,0.1-4.7,0.1c-1.7,0-3.5,0.3-5.2,0.1  c-1.6-0.1-3.2-0.7-4.8-0.6c-1.1,0.1-2.3,0.2-3.5,0.4c-0.9,0.1-1.6,0.5-2.5,0.8c-1.6,0.6-3.2,0.6-4.8,0.7c-1.3,0.1-2.3,0.1-3.5-0.4  c-1-0.3-2.3-0.7-3.4-0.4c-0.4,0.4-0.9,0.9-1.4,1.2c-0.7,0.4-1.4,0.2-2.2,0.2c-0.6,0-1.4-0.5-2-0.3c-0.8,0.3-1.1,1.7-1.2,1.7H80.2z" />
+                    <g>
+                        <path fill="green"
+                            d="M67.9,77c0.3,0.1,0.5,0.1,0.8,0.2c1.3,0.3,2.6,0.5,4,0.6c1.6-6.1,6.9-10.8,13.4-11.4   c-0.5,0-0.9-0.1-1.4-0.1c-5.1,0-9.6,2.7-12.2,6.7c0.9-6.7,4.2-12.5,9-16.7C74.9,60,70.2,66.6,69.1,74.4c-2-5.4-5.6-9.9-10.3-13   C63.3,65.3,66.6,70.8,67.9,77z" />
+                    </g>
+                    <g>
+                        <path fill="green"
+                            d="M18.2,70.9c-1.5-2.8-3.7-5.1-6.5-6.7c3.6,3.1,5.9,7.6,6.1,12.6c0,0,0,0,0.1,0c0.8,0,1.8,0.2,2.8,0.6   c0.5,0.2,1,0.3,1.6,0.3c1.5-5,5.8-8.7,11.2-9.1c-0.4,0-0.8-0.1-1.2-0.1c-4.1,0-7.8,2.1-10,5.2c1.6-4.8,4.5-9,8.2-12.3   c-4.3,2.8-7.8,6.9-9.8,11.7c-1.5-8.7-8-15.7-16.7-17.8C10.9,58,16.2,63.8,18.2,70.9z" />
+                    </g>
+                    <path fill="brown"
+                        d="M45,9.3c-14.4,0-26,11.6-26,26v30.5c1,1.4,1.5,2.9,1.9,4.4c2.1-3.9,5.2-7.1,9-9.6c0.2-0.1,0.4-0.2,0.6-0.2  c0.3,0,0.6,0.1,0.8,0.4c0.3,0.4,0.3,1-0.1,1.4c-2.4,2.1-4.4,4.6-5.9,7.3c2.1-1.3,4.5-2.1,7-2.1c0.4,0,0.9,0,1.3,0.1  c0.5,0.1,0.9,0.5,0.9,1c0,0.5-0.4,0.9-0.9,1c-4.8,0.4-8.8,3.7-10.2,8.2c0.1,0,0.3,0,0.4,0c0.4,0,0.8-0.1,1.1-0.1  c1.2-0.1,2.4-0.2,3.5-0.6c0.2-0.1,0.4-0.1,0.5-0.2c0.7-0.3,1.3-0.5,2.1-0.7c1.1-0.2,2.4-0.3,3.5-0.4c0.2,0,0.4,0,0.6,0  c0.9,0,1.8,0.2,2.6,0.3c0.6,0.1,1.2,0.2,1.7,0.3c0.3,0,0.7,0,1.1,0c0.6,0,1.3-0.2,2-0.3c0.7,0,1.4-0.3,2.1-0.3h0.1h0.4h0.4  c1.3,0,2.5,0.2,3.8,0.1c0.5,0,1,0,1.5-0.1c0.5-0.1,1.2-0.2,1.8-0.2c0.1,0,0.4,0,0.4,0v0c0,0,1.2,0.4,1.7,0.7  c0.2,0.1,0.3,0.2,0.4,0.3c0.7,0.3,1.4,0.5,2.3,0.5c0.8,0,1.6-0.1,2.4-0.2c0.7-0.1,1.5-0.2,2.2-0.2c0.6,0,1.1,0,1.6,0  c1.2,0,2.1,0.1,3.1,0.2c0,0,0,0,0.1,0c-1.2-5.7-4.3-10.8-8.7-14.6c-0.4-0.3-0.5-0.9-0.1-1.4c0.2-0.3,0.5-0.4,0.8-0.4  c0.2,0,0.4,0.1,0.5,0.2c4,2.6,7.2,6.3,9.4,10.5c0.6-2.1,1.3-4,2.3-5.9v-30C71,20.9,59.4,9.3,45,9.3z M53.4,31.3h-6.3v16.4h-4V31.3  h-6.3v-4h6.3v-7.4h4v7.4h6.3V31.3z" />
+                </svg>
+                <p class="font-bold text-3xl tracking-wide font-dancing">{{ $payload->name }}</p>
+            </div>
+
+            <div class="space-y-1">
+                <p class="text-sm mb-3">Date Generated: {{ $payload->date }} </p>
+                <p class="text-sm ">Address: {{ $payload->address }}</p>
+                <p class="text-sm ">Phone: {{ $payload->phone }}</p>
+                <p class="text-sm ">Email: {{ $payload->email }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto py-20">
+        @if ($payload->resource === 'customers' || $payload->resource === 'users')
+            <table class="w-full text-left text-sm">
+                <thead class="border-b border-slate-100">
+                    <tr>
+                        <th scope="col" class="p-4">Name</th>
+                        <th scope="col" class="p-4">Email</th>
+                        <th scope="col" class="p-4">Phone</th>
+                        <th scope="col" class="p-4">Status</th>
+                        <th scope="col" class="p-4">Joined On</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline">
+                    @foreach ($payload->data as $customer)
+                        <tr>
+                            <td class="p-4">{{ $customer->name }}</td>
+                            <td class="p-4">{{ $customer->email }}</td>
+                            <td class="p-4">{{ $customer->phone }}</td>
+                            <td class="p-4">{{ $customer->status }}</td>
+                            <td class="p-4">{{ $customer->joined_on }}</td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+        @elseif ($payload->resource === 'orders')
+            <table class="w-full text-left text-sm">
+                <thead class="border-b ">
+                    <tr>
+                        <th scope="col" class="p-4">Order Id</th>
+                        <th scope="col" class="p-4">Customer</th>
+                        <th scope="col" class="p-4">FullFillment Status</th>
+                        <th scope="col" class="p-4">Payment Status</th>
+                        <th scope="col" class="p-4">Items</th>
+                        <th scope="col" class="p-4">Total</th>
+                        <th scope="col" class="p-4">Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline">
+                    @foreach ($payload->data as $order)
+                        <tr>
+                            <td class="p-4">#{{ $order->id }}</td>
+                            <td class="p-4">{{ $order->customer }}</td>
+                            <td class="p-4">{{ $order->status }}</td>
+                            <td class="p-4">{{ $order->payment_status }}</td>
+                            <td class="p-4">{{ $order->items }}</td>
+                            <td class="p-4">{{ $order->total }}</td>
+                            <td class="p-4">{{ $order->date }}</td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+        @elseif ($payload->resource === 'memorials')
+            <table class="w-full text-left text-sm">
+                <thead class="border-b ">
+                    <tr>
+                        <th scope="col" class="p-4">ID</th>
+                        <th scope="col" class="p-4">Title</th>
+                        <th scope="col" class="p-4">Price</th>
+                        <th scope="col" class="p-4">Sale Price</th>
+                        <th scope="col" class="p-4">Sales</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline">
+                    @foreach ($payload->data as $memorial)
+                        <tr>
+                            <td class="p-4">{{ $memorial->id }}</td>
+                            <td class="p-4">{{ $memorial->title }}</td>
+                            <td class="p-4">{{ $memorial->price }}</td>
+                            <td class="p-4">{{ $memorial->sale_price ?? '--' }}</td>
+                            <td class="p-4">{{ $memorial->sales }}</td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+        @elseif ($payload->resource === 'transactions')
+            <table class="w-full text-left text-sm">
+                <thead class="border-b ">
+                    <tr>
+                        <th scope="col" class="p-4">Id</th>
+                        <th scope="col" class="p-4">Transactions Id</th>
+                        <th scope="col" class="p-4">Order Id</th>
+                        <th scope="col" class="p-4">Customer</th>
+                        <th scope="col" class="p-4">Status</th>
+                        <th scope="col" class="p-4">Amount</th>
+                        <th scope="col" class="p-4">Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline">
+                    @foreach ($payload->data as $transaction)
+                        <tr>
+                            <td class="p-4">{{ $transaction->id }}</td>
+                            <td class="p-4">{{ $transaction->transaction_id }}</td>
+                            <td class="p-4">{{ $transaction->order_id }}</td>
+                            <td class="p-4">{{ $transaction->customer }}</td>
+                            <td class="p-4">{{ $transaction->status }}</td>
+                            <td class="p-4">{{ $transaction->amount }}</td>
+                            <td class="p-4">{{ $transaction->date }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div>No data {{ $payload->resource }}</div>
+        @endif
+
+    </section>
+</body>
+
+</html>

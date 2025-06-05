@@ -54,6 +54,8 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn() => $request->session()->get('message'),
             ],
             'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'notificationsCount' => !$request->user() ? 0 : $request->user()->unreadNotifications->count(),
+            'cart_items' => auth()->check() ? auth()->user()->cartItems()->sum('quantity') : collect(session()->get('cartItems'))->sum('quantity'),
         ];
     }
 }
