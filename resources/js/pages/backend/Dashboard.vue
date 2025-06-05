@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { RangeCalendar } from '@/components/ui/range-calendar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useAppearance } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import { Deferred, Head, Link, router, usePage } from '@inertiajs/vue3';
@@ -31,6 +32,7 @@ const props = defineProps({
 const page = usePage();
 const start_date = ref(props.filters?.start_date ? parseDate(props.filters?.start_date.slice(0, 10)) : null);
 const end_date = ref(props.filters?.end_date ? parseDate(props.filters?.end_date.slice(0, 10)) : null);
+const { appearance, updateAppearance } = useAppearance();
 
 const df = new DateFormatter('en-US', {
     dateStyle: 'medium',
@@ -115,6 +117,8 @@ const renderSalesChart = (data) => {
         salesChart.destroy();
     }
 
+    const isDark = appearance.value === 'dark' || (appearance.value === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
     const datasets = Object.entries(data).map(([year, sales], index) => {
         const color = ['#3b82f6', '#10b981'][index] || '#64748b';
 
@@ -147,11 +151,14 @@ const renderSalesChart = (data) => {
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { callback: (value) => `Ksh ${value}` },
-                    grid: { drawBorder: false },
+                    ticks: { callback: (value) => `Ksh ${value}`, color: isDark ? '#e5e7eb' : '#374151' },
+                    grid: { drawBorder: false, color: isDark ? '#374151' : '#e5e7eb' },
                 },
                 x: {
-                    grid: { display: false },
+                    ticks: {
+                        color: isDark ? '#e5e7eb' : '#374151',
+                    },
+                    grid: { display: false, color: isDark ? '#374151' : '#e5e7eb' },
                 },
             },
             plugins: {
@@ -159,6 +166,7 @@ const renderSalesChart = (data) => {
                     display: true,
                     text: 'Sales Per Month',
                     align: 'start',
+                    color: isDark ? '#f3f4f6' : '#111827',
                 },
                 tooltip: {
                     callbacks: {
@@ -174,6 +182,7 @@ const renderSalesChart = (data) => {
                         pointStyle: 'circle',
                         boxHeight: 6,
                         boxWidth: 6,
+                        color: isDark ? '#d1d5db' : '#374151',
                     },
                 },
             },
@@ -193,6 +202,13 @@ const renderTopSellingChart = (data) => {
         topSellingChart.destroy();
     }
 
+    // Detect if dark mode is active
+    const isDark = appearance.value === 'dark' || (appearance.value === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    // Define color sets
+    const lightColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#6366f1'];
+    const darkColors = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#818cf8'];
+
     topSellingChart = new Chart(ctx, {
         type: 'pie',
         options: {
@@ -209,6 +225,7 @@ const renderTopSellingChart = (data) => {
                     display: true,
                     text: 'Top Selling Products',
                     align: 'start',
+                    color: isDark ? '#f3f4f6' : '#111827',
                 },
                 legend: {
                     display: true,
@@ -218,6 +235,7 @@ const renderTopSellingChart = (data) => {
                         pointStyle: 'circle',
                         boxHeight: 6,
                         boxWidth: 6,
+                        color: isDark ? '#d1d5db' : '#374151',
                     },
                 },
             },
@@ -228,7 +246,7 @@ const renderTopSellingChart = (data) => {
                 {
                     label: 'Top Selling Memorials',
                     data: data.map((item) => item.value),
-                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#6366f1'],
+                    backgroundColor: isDark ? darkColors : lightColors,
                     hoverOffset: 4,
                     borderRadius: 20,
                 },
@@ -273,6 +291,11 @@ const transactionStatusClasses = (status) => {
             return 'bg-slate-500 text-white dark:bg-slate-400 dark:text-black';
     }
 };
+
+watch(appearance, () => {
+    renderSalesChart(props.salesTrend, appearance);
+    renderTopSellingChart(props.topSellingMemorials, appearance);
+});
 </script>
 
 <template>

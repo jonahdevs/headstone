@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { cn } from '@/lib/utils';
 import type { HTMLAttributes } from 'vue';
 
 defineOptions({
@@ -6,10 +7,10 @@ defineOptions({
 });
 
 interface Props {
-    className?: HTMLAttributes['class'];
+    class?: HTMLAttributes['class'];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -22,6 +23,7 @@ defineProps<Props>();
         viewBox="0 0 90 112.5"
         style="enable-background: new 0 0 90 90"
         xml:space="preserve"
+        :class="cn('h-10 w-16', props.class)"
     >
         <path
             fill="brown"

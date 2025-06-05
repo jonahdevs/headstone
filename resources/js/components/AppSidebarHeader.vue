@@ -9,6 +9,7 @@ import { Bell, Moon, Sun, SunMoon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from './ui/dropdown-menu';
+
 const { appearance, updateAppearance } = useAppearance();
 
 withDefaults(
