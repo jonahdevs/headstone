@@ -19,7 +19,7 @@ use App\Http\Controllers\Backend\UsersController;
 use App\Http\Controllers\Customer\AccountController;
 use App\Http\Controllers\Customer\DownloadReceiptController;
 use App\Http\Controllers\Frontend\AboutController;
-use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;

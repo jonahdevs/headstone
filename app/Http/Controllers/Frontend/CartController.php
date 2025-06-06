@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Store\StoreCartRequest;
@@ -230,7 +230,10 @@ class CartController extends Controller
             $request->session()->put('cartItems', $cartItems);
         }
 
-        return back();
+        return back()->with('message', [
+            'type' => 'success',
+            'Item updated successfully!'
+        ]);
     }
 
     public function destroy(Request $request, $itemId)
@@ -246,6 +249,9 @@ class CartController extends Controller
             $request->session()->put('cartItems', $cartItems->values()); // reindex the array
         }
 
-        return back();
+        return back()->with('message', [
+            'type' => 'success',
+            'Item deleted successfully!'
+        ]);
     }
 }

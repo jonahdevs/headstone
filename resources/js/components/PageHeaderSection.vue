@@ -12,7 +12,7 @@ const page = usePage();
 </script>
 
 <template>
-    <section class="relative h-[20svh] min-h-44 w-full">
+    <section class="relative h-[25svh] w-full md:h-[20svh]">
         <img :src="graveStoneImg" alt="grave stone" class="h-full w-full object-cover object-right" />
 
         <div class="absolute inset-0 flex flex-col justify-center bg-linear-to-r from-stone-800 to-transparent to-100%">

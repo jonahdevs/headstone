@@ -3,12 +3,14 @@ import PageHeaderSection from '@/components/PageHeaderSection.vue';
 import { Button } from '@/components/ui/button';
 import { NumberField, NumberFieldContent, NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput } from '@/components/ui/number-field';
 import GuestLayout from '@/layouts/GuestLayout.vue';
-import { Deferred, Head, router, useForm } from '@inertiajs/vue3';
+import { Deferred, Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { LoaderCircle, ShoppingBag } from 'lucide-vue-next';
+import { computed, onMounted, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 // Your logic goes here
 const props = defineProps({ cart: Object });
+const flash = computed(() => usePage().props.flash);
 const pageSectionLinks = [
     {
         title: 'Home',
@@ -25,9 +27,6 @@ const checkoutForm = useForm();
 const handleCheckout = () => {
     checkoutForm.post(route('checkout'), {
         preserveScroll: true,
-        onSuccess: () => {
-            toast.success('Checkout successful!');
-        },
         onError: () => {
             toast.error('Failed to proceed to checkout. Please try again.');
         },
@@ -41,9 +40,6 @@ const updateQuantity = (itemId, val) => {
 
     updateForm.put(route('cart.update', itemId), {
         preserveScroll: true,
-        onSuccess: () => {
-            toast.success('Cart updated successfully!');
-        },
         onError: () => {
             toast.error('Failed to update cart. Please try again.');
         },
@@ -53,14 +49,33 @@ const updateQuantity = (itemId, val) => {
 const deleteItem = (itemId) => {
     router.delete(route('cart.destroy', itemId), {
         preserveScroll: true,
-        onSuccess: () => {
-            toast.success('Item removed from cart successfully!');
-        },
+
         onError: () => {
             toast.error('Failed to remove item from cart. Please try again.');
         },
     });
 };
+
+watch(
+    () => flash.value.message,
+    (msg) => {
+        if (msg && msg.type === 'success') {
+            toast.success(msg.body);
+        } else if (msg && msg.type === 'error') {
+            toast.error(msg.body);
+        }
+    },
+);
+
+onMounted(() => {
+    let msg = flash.value.message;
+
+    if (msg && msg.type === 'success') {
+        toast.success(msg.body);
+    } else if (msg && msg.type === 'error') {
+        toast.error(msg.body);
+    }
+});
 </script>
 
 <template>

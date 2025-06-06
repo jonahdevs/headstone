@@ -105,10 +105,10 @@ class CheckoutController extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Authorization: Bearer " . env('PAYSTACK_SECRET_KEY'),
             "Cache-Control: no-cache",
-        ));
+        ]);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

@@ -11,11 +11,8 @@ class NotificationsController extends Controller
 {
     public function index()
     {
-        $notifications = auth()->user()->notifications()->paginate(10);
-
         return Inertia::render('backend/notifications/Index', [
-            'notifications' => inertia()->merge(fn() => $notifications->items()),
-            'notification_paginations' => $notifications->toArray(),
+            'notifications' => inertia()->defer(fn() => NotificationsResource::collection(auth()->user()->notifications()->paginate(10))),
         ]);
     }
 

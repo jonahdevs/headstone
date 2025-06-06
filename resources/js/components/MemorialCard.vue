@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="group relative w-full max-w-72 overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm">
+    <div class="group relative w-full overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm">
         <!-- Image -->
         <AspectRatio :ratio="2 / 2" class="overflow-hidden">
             <img

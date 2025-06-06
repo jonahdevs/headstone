@@ -235,7 +235,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                     <CarouselContent class="pb-5">
                         <Deferred data="testimonies">
                             <template #fallback>
-                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                                     <div class="bg-card h-full min-h-36 animate-pulse space-y-3 rounded-md border p-3 shadow-sm">
                                         <!-- Header: Avatar + Name + Verified -->
                                         <div class="flex items-center justify-between">
@@ -266,7 +266,11 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                             </template>
 
                             <template v-if="testimonies">
-                                <CarouselItem v-for="testimony in testimonies.data" :key="testimony.id" class="h-full pb-3 sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem
+                                    v-for="testimony in testimonies.data"
+                                    :key="testimony.id"
+                                    class="h-full pb-3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                                >
                                     <div class="bg-card h-full min-h-36 rounded-md border p-3 shadow-sm">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">

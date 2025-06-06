@@ -3,11 +3,12 @@ import { useAppearance } from '@/composables/useAppearance';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { useEchoModel } from '@laravel/echo-vue';
 import { Bell, ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import AppLogoIcon from './AppLogoIcon.vue';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Input } from './ui/input';
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 
 const page = usePage();
@@ -16,6 +17,9 @@ const user = computed(() => page.props.auth.user);
 const { appearance, updateAppearance } = useAppearance();
 const modes = ['light', 'dark', 'system'];
 const notificationsCount = ref(page.props.notificationsCount);
+const filters = reactive({
+    search: '',
+});
 
 if (user.value) {
     const { channel } = useEchoModel('App.Models.User', user.value?.id);
@@ -50,6 +54,10 @@ const appearanceIcon = computed(() => {
             return SunMoon;
     }
 });
+
+const handleSearch = () => {
+    router.get(route('memorials'), filters);
+};
 </script>
 
 <template>
@@ -164,9 +172,33 @@ const appearanceIcon = computed(() => {
                     <component :is="appearanceIcon" class="size-5" />
                 </button>
 
-                <Link href="#" class="max-lg:hidden">
-                    <Search class="h-5 w-5" />
-                </Link>
+                <Sheet class="max-lg:hidden">
+                    <SheetTrigger class="cursor-pointer max-lg:hidden">
+                        <Search class="h-5 w-5" />
+                    </SheetTrigger>
+                    <SheetContent side="top">
+                        <SheetHeader>
+                            <SheetTitle></SheetTitle>
+                            <div class="grid place-items-center">
+                                <form @submit.prevent="handleSearch">
+                                    <div class="relative flex w-full items-center md:w-80">
+                                        <Input
+                                            id="search"
+                                            type="search"
+                                            placeholder="Search...."
+                                            class="w-full max-w-96 pl-8"
+                                            v-model="filters.search"
+                                        />
+                                        <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                                            <Search class="text-muted-foreground size-4" />
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </SheetHeader>
+                    </SheetContent>
+                </Sheet>
+
                 <Link :href="route('cart')" class="relative">
                     <ShoppingCart class="h-5 w-5" />
                     <span

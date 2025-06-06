@@ -74,13 +74,12 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
 const form = useForm({
     memorial_id: '',
     font: 'nunito',
-    first_name: 'John',
-    last_name: 'Mwangi',
+    first_name: '',
+    last_name: '',
     DOB: '',
     DOD: '',
     epitaph: '',
-    instructions:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin hendrerit lorem sit amet viverra. Nulla tempus fermentum nunc, sed posuere quam pretium eget.',
+    instructions: '',
     image: null,
     terms: false,
 });
@@ -136,8 +135,8 @@ const handleSubmit = (memorialId) => {
         <PageHeaderSection :title="memorial?.data?.title" :links="pageSectionLinks" />
 
         <section class="container mx-auto max-w-7xl space-y-16 px-4 py-10">
-            <div class="relative grid grid-cols-1 gap-8 gap-x-0 md:grid-cols-2">
-                <div class="sticky top-20">
+            <div class="relative grid grid-cols-1 gap-8 gap-x-0 gap-y-8 md:grid-cols-2">
+                <div>
                     <Carousel class="relative w-10/12" @init-api="(val) => (emblaMainApi = val)">
                         <CarouselContent>
                             <CarouselItem v-for="image in memorial.data.images" :key="image.id">
@@ -201,7 +200,7 @@ const handleSubmit = (memorialId) => {
                                 </div>
 
                                 <!-- Tips Section -->
-                                <div class="bg-secondary text-secondary-foreground rounded-md p-4 text-sm">
+                                <div class="bg-secondary text-secondary-foreground rounded-md p-2 text-sm md:p-4">
                                     <p class="mb-1 font-medium">Tips:</p>
                                     <ul class="list-inside list-disc space-y-1">
                                         <li>Double-check spelling and dates for accuracy.</li>
@@ -211,7 +210,7 @@ const handleSubmit = (memorialId) => {
                                 </div>
                             </DialogHeader>
 
-                            <form @submit.prevent="handleSubmit(memorial.data.id)" class="grid gap-4 overflow-y-auto border-y px-6 py-4">
+                            <form @submit.prevent="handleSubmit(memorial.data.id)" class="grid gap-4 overflow-y-auto border-y px-4 py-4 md:px-6">
                                 <section class="@container/form space-y-6 rounded-xl">
                                     <!-- inputs grid -->
                                     <div class="grid grid-cols-1 gap-4 @xl/form:grid-cols-2">
@@ -394,8 +393,8 @@ const handleSubmit = (memorialId) => {
                         <AppLogoIcon class="size-7" />
                         <p class="text-muted-foreground text-sm uppercase">Testimonials</p>
                     </div>
-                    <h2 class="text-center text-3xl font-bold">What Our Customers Say</h2>
-                    <p class="text-center text-sm">Hear from our satisfied customers about their experiences with our memorials.</p>
+                    <h2 class="text-3xl font-bold sm:text-center">What Our Customers Say</h2>
+                    <p class="text-sm sm:text-center">Hear from our satisfied customers about their experiences with our memorials.</p>
                 </div>
 
                 <Carousel
@@ -409,7 +408,7 @@ const handleSubmit = (memorialId) => {
                     <CarouselContent>
                         <Deferred data="testimonies">
                             <template #fallback>
-                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                                     <div class="bg-card h-full min-h-36 animate-pulse space-y-3 rounded-md border p-3 shadow-sm">
                                         <!-- Header: Avatar + Name + Verified -->
                                         <div class="flex items-center justify-between">
@@ -440,7 +439,11 @@ const handleSubmit = (memorialId) => {
                             </template>
 
                             <template v-if="testimonies">
-                                <CarouselItem v-for="testimony in testimonies.data" :key="testimony.id" class="h-full pb-3 sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem
+                                    v-for="testimony in testimonies.data"
+                                    :key="testimony.id"
+                                    class="h-full pb-3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                                >
                                     <div class="bg-card h-full min-h-36 rounded-md border p-3 shadow-sm">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">

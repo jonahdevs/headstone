@@ -6,12 +6,13 @@ import PageHeaderSection from '@/components/PageHeaderSection.vue';
 import Pagination from '@/components/Pagination.vue';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import GuestLayout from '@/layouts/GuestLayout.vue';
 import { Deferred, Head, router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
-import { ChevronDown } from 'lucide-vue-next';
+import { ChevronDown, Search } from 'lucide-vue-next';
 import { reactive, ref } from 'vue';
 
 // Your logic goes here
@@ -35,6 +36,7 @@ const pageSectionLinks = [
 ];
 
 const filters = reactive({
+    search: props.filters?.search || '',
     style: props.filters?.style || '',
     min_price: props.filters?.min_price || 0,
     max_price: props.filters?.max_price || 100000,
@@ -63,6 +65,7 @@ const debouncedApplyFilters = useDebounceFn((val) => {
 
 const clearFilters = () => {
     filters.style = '';
+    filters.search = '';
     filters.min_price = 0;
     filters.max_price = 100000;
     applyFilters();
@@ -87,9 +90,23 @@ const updatePage = (page) => {
     <GuestLayout>
         <PageHeaderSection :title="category ? category.name : 'All Memorials'" :links="pageSectionLinks" />
 
-        <section class="container mx-auto max-w-7xl space-y-6 px-4 py-16 md:px-8 xl:px-0">
+        <section class="@container container mx-auto max-w-7xl space-y-6 px-4 py-16 md:px-8 xl:px-0">
             <div class="flex flex-wrap gap-4">
-                <!-- filter customer by status -->
+                <div class="relative flex w-full items-center md:w-fit">
+                    <Input
+                        id="search"
+                        type="search"
+                        placeholder="Search...."
+                        class="w-full max-w-64 pl-8"
+                        v-model="filters.search"
+                        @input="debouncedApplyFilters"
+                    />
+
+                    <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                        <Search class="text-muted-foreground size-4" />
+                    </span>
+                </div>
+                <!-- filter  status -->
                 <Select
                     v-if="!page.url.includes('category')"
                     v-model="filters.style"
@@ -129,13 +146,11 @@ const updatePage = (page) => {
                 <Button @click.prevent="clearFilters" variant="link" as="button"> Clear Filters </Button>
             </div>
 
-            <div class="flex flex-wrap gap-4">
+            <div class="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @5xl:grid-cols-4">
                 <Deferred data="memorials">
                     <template #fallback>
                         <template v-for="i in 4" :key="i">
-                            <div
-                                class="relative w-full max-w-72 animate-pulse overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm"
-                            >
+                            <div class="relative w-full animate-pulse overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm">
                                 <!-- Image placeholder -->
                                 <Skeleton class="aspect-square rounded-t-md" />
 

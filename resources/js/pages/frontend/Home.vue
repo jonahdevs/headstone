@@ -18,7 +18,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
 <template>
     <Head title="Home" />
     <GuestLayout>
-        <section class="relative h-[50svh]">
+        <section class="relative h-[70svh] md:h-[50svh]">
             <img :src="graveStoneImg" alt="grave stone" class="h-full w-full object-cover object-right brightness-75" />
 
             <div class="absolute inset-0 container mx-auto flex max-w-7xl items-center px-4 md:px-8 xl:px-0">
@@ -28,7 +28,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                         We craft headstones that celebrate love, legacy, and remembrance. choose from a range of custom memorials designed with care,
                         dignity, and enduring quality
                     </p>
-                    <div class="mt-5 flex flex-wrap items-center gap-5">
+                    <div class="mt-5 flex flex-wrap items-center gap-5 gap-y-2">
                         <Button size="lg" @click="router.visit(route('memorials'))">Design Your Headstone</Button>
                         <Button size="lg" @click="router.visit(route('quotation'))">Get a Free Quotation</Button>
                     </div>
@@ -156,7 +156,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
             </div>
         </section>
 
-        <section class="container mx-auto max-w-7xl px-4 py-16 md:px-8 xl:px-0">
+        <section class="@container container mx-auto max-w-7xl px-4 py-16 md:px-8 xl:px-0">
             <div class="flex flex-col items-center gap-3">
                 <div class="flex items-center gap-3">
                     <AppLogoIcon class="w-6" />
@@ -166,7 +166,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                 <p class="text-center text-sm">Explore our collection of best-selling headstones, designed to honor and remember your loved ones.</p>
             </div>
 
-            <div class="mt-10 flex flex-wrap justify-center gap-4">
+            <div class="mt-10 grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @5xl:grid-cols-4">
                 <Deferred data="memorials">
                     <template #fallback>
                         <template v-for="i in 4" :key="i">
@@ -228,7 +228,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                     <CarouselContent>
                         <Deferred data="testimonies">
                             <template #fallback>
-                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                                     <div class="bg-card h-full min-h-36 animate-pulse space-y-3 rounded-md border p-3 shadow-sm">
                                         <!-- Header: Avatar + Name + Verified -->
                                         <div class="flex items-center justify-between">
@@ -259,7 +259,11 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                             </template>
 
                             <template v-if="testimonies">
-                                <CarouselItem v-for="testimony in testimonies.data" :key="testimony.id" class="h-full pb-3 sm:basis-1/2 lg:basis-1/4">
+                                <CarouselItem
+                                    v-for="testimony in testimonies.data"
+                                    :key="testimony.id"
+                                    class="h-full pb-3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                                >
                                     <div class="bg-card h-full min-h-36 rounded-md border p-3 shadow-sm">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">

@@ -16,7 +16,7 @@ class MemorialsController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->only(['style', 'min_price', 'max_price']);
+        $filters = $request->only(['style', 'min_price', 'max_price', 'search']);
 
         return Inertia::render('frontend/memorials/Index', [
             'memorials' => inertia::defer(function () use ($filters) {
@@ -32,16 +32,28 @@ class MemorialsController extends Controller
 
     protected function applySearch($query, $filters)
     {
-        return $query->when($filters['style'] ?? null, function (Builder $query, $style) {
-            $query->whereHas('category', function (Builder $query) use ($style) {
-                $query->where('name', $style);
-            })->when();
-        })->when(isset($filters['min_price']) && isset($filters['max_price']), function (Builder $query) use ($filters) {
-            $query->whereBetween('price', [
-                $filters['min_price'],
-                $filters['max_price']
-            ]);
-        });
+        return $query
+            ->when($filters['style'] ?? null, function (Builder $query, $style) {
+                $query->whereHas('category', function (Builder $query) use ($style) {
+                    $query->where('name', $style);
+                });
+            })
+            ->when(isset($filters['min_price']) && isset($filters['max_price']), function (Builder $query) use ($filters) {
+                $query->whereBetween('price', [
+                    $filters['min_price'],
+                    $filters['max_price']
+                ]);
+            })
+            ->when(isset($filters['search']), function (Builder $query, $search) {
+
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhereHas('tags', function (Builder $query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('materials', function (Builder $query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            });
     }
 
     public function byCategory(string $category)

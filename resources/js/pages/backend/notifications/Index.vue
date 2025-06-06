@@ -1,13 +1,14 @@
 <script setup>
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Deferred, Head, router, useForm, usePage, WhenVisible } from '@inertiajs/vue3';
+import { Deferred, Head, router, usePage } from '@inertiajs/vue3';
 import { useEchoModel } from '@laravel/echo-vue';
+import axios from 'axios';
 import { AlertCircle } from 'lucide-vue-next';
 import { computed, onUnmounted } from 'vue';
 
 // Your logic goes here
-const props = defineProps({ notifications: Object, notification_paginations: Object });
+const props = defineProps({ notifications: Object });
 const user = computed(() => usePage().props.auth.user);
 
 const breadcrumbs = [
@@ -39,23 +40,13 @@ const updatePage = (page) => {
     );
 };
 
-const markAllAsRead = () => {
-    const form = useForm();
-    form.post(route('admin.notifications.markAsRead'));
+const markAllAsRead = async () => {
+    await axios.post(route('admin.notifications.markAsRead'));
 };
 
 onUnmounted(() => {
     markAllAsRead();
 });
-
-const loadMore = () => {
-    router.reload({
-        data: {
-            page: props.notification_paginations.current_page + 1,
-        },
-        only: ['notifications', 'notification_paginations'],
-    });
-};
 </script>
 
 <template>
@@ -70,7 +61,7 @@ const loadMore = () => {
                     <div></div>
                 </template>
 
-                <template v-for="notification in notifications" :key="notification.id">
+                <template v-for="notification in notifications.data" :key="notification.id">
                     <div
                         class="rounded-md border p-4 shadow-sm"
                         :class="{
@@ -99,7 +90,7 @@ const loadMore = () => {
                 </template>
 
                 <Alert
-                    v-if="notifications.length < 1"
+                    v-if="notifications.data.length < 1"
                     class="border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-500"
                 >
                     <AlertCircle />
@@ -109,19 +100,8 @@ const loadMore = () => {
                     </AlertDescription>
                 </Alert>
             </Deferred>
-            <!-- <button @click="loadMore">Load more</button> -->
 
-            <WhenVisible
-                always
-                :params="{
-                    data: {
-                        page: notification_paginations.current_page + 1,
-                    },
-                    only: ['notifications', 'notification_paginations'],
-                }"
-            >
-                <div v-if="notification_paginations.current_page >= notification_paginations.last_page">You have reached the end</div>
-            </WhenVisible>
+            <Pagination v-if="notifications" :meta="notifications.meta" :onPageChange="updatePage" />
         </div>
     </AppLayout>
 </template>
