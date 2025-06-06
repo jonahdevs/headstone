@@ -58,7 +58,7 @@ const appearanceIcon = computed(() => {
             <div class="flex flex-wrap items-center gap-4 py-3">
                 <div class="flex items-center gap-2">
                     <Mail class="size-4" />
-                    <p class="text-sm">info@everstone.co.ke</p>
+                    <a href="mailto:info@everstone.co.ke" class="text-sm">info@everstone.co.ke</a>
                 </div>
                 <div class="flex items-center gap-2">
                     <PhoneCall class="size-4" />

@@ -27,6 +27,9 @@ use App\Http\Controllers\Frontend\QuotationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('test', function () {
+    return view('mails.quotation-reply');
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

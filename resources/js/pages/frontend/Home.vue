@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Skeleton } from '@/components/ui/skeleton';
 import GuestLayout from '@/layouts/GuestLayout.vue';
-import { Deferred, Head } from '@inertiajs/vue3';
+import { Deferred, Head, router } from '@inertiajs/vue3';
 import Autoplay from 'embla-carousel-autoplay';
 import { BadgeCheck, Star } from 'lucide-vue-next';
 
@@ -29,8 +29,8 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                         dignity, and enduring quality
                     </p>
                     <div class="mt-5 flex flex-wrap items-center gap-5">
-                        <Button size="lg">Design Your Headstone</Button>
-                        <Button size="lg">Get a Free Quotation</Button>
+                        <Button size="lg" @click="router.visit(route('memorials'))">Design Your Headstone</Button>
+                        <Button size="lg" @click="router.visit(route('quotation'))">Get a Free Quotation</Button>
                     </div>
                 </div>
             </div>
@@ -202,7 +202,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                 </Deferred>
             </div>
             <div class="flex items-center justify-center">
-                <Button class="mt-5"> View All Headstones </Button>
+                <Button class="mt-5" @click="router.visit(route('memorials'))"> View All Headstones </Button>
             </div>
         </section>
 
@@ -307,7 +307,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
             <div class="absolute inset-0 container mx-auto grid max-w-7xl place-items-center px-4 md:px-8 xl:px-0">
                 <div class="flex flex-col items-center text-center">
                     <p class="text-3xl font-bold text-white">Start Designing a Custom Headstone</p>
-                    <Button class="mt-3 min-w-44"> Design Now </Button>
+                    <Button class="mt-3 min-w-44" @click="router.visit(route('memorials'))"> Design Now </Button>
                 </div>
             </div>
         </section>

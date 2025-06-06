@@ -202,7 +202,7 @@ const transactionStatusClasses = (status) => {
             </template>
 
             <template v-if="orders.data.length < 1">
-                <section class="text-muted-foreground flex w-full flex-col items-center justify-center gap-2">
+                <section class="text-muted-foreground flex min-h-[50svh] w-full flex-col items-center justify-center gap-2">
                     <NoDataFound />
                 </section>
             </template>

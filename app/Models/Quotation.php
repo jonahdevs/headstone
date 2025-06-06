@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProcessNewQuotation;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -78,22 +79,6 @@ class Quotation extends Model
     }
 
 
-    // events
-    public static function booted(): void
-    {
-        static::creating(function (self $quotation) {
-            $quotation->status = $quotation->status ?: 'pending';
-        });
-
-        static::updating(function (self $quotation) {
-            $quotation->status = !$quotation->isDirty('response_data') ?: 'responded';
-        });
-
-        static::deleting(function (self $quotation) {
-            $quotation->deleted_by = auth()->id();
-        });
-    }
-
     public function broadcastOn()
     {
         return [
@@ -109,5 +94,25 @@ class Quotation extends Model
             'deleted' => 'quotation.deleted',
             default => null,
         };
+    }
+
+    // events
+    public static function booted(): void
+    {
+        static::creating(function (self $quotation) {
+            $quotation->status = $quotation->status ?: 'pending';
+        });
+
+        static::created(function (self $quotation) {
+            ProcessNewQuotation::dispatch($quotation);
+        });
+
+        static::updating(function (self $quotation) {
+            $quotation->status = !$quotation->isDirty('response_data') ?: 'responded';
+        });
+
+        static::deleting(function (self $quotation) {
+            $quotation->deleted_by = auth()->id();
+        });
     }
 }

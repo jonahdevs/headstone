@@ -101,9 +101,7 @@ const memorials = order.memorials;
                 <!-- Actions -->
                 <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
                     <Button @click="router.visit(route('customer.orders'))">View My Orders</Button>
-                    <Button @click="router.visit(route('home'))" variant="outline" class="border-primary border dark:border-white"
-                        >Return to Homepage</Button
-                    >
+                    <Button @click="router.visit(route('home'))" variant="outline">Return to Homepage</Button>
                 </div>
             </div>
         </section>

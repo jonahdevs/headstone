@@ -8,19 +8,11 @@ const menus = ref([
     {
         title: 'Shop',
         items: [
-            { text: 'Flat Headstone', link: '#' },
-            { text: 'Upright Headstone', link: '#' },
-            { text: 'Full Grave Covers', link: '#' },
-            { text: 'Memorial Plaques', link: '#' },
-        ],
-    },
-    {
-        title: 'Info',
-        items: [
             { text: 'Flat Headstone', link: route('memorials.byCategory', 'Flat Headstones') },
             { text: 'Upright Headstone', link: route('memorials.byCategory', 'Upright Headstones') },
             { text: 'Full Grave Covers', link: route('memorials.byCategory', 'Full Grave Covers') },
             { text: 'Memorial Plaques', link: route('memorials.byCategory', 'Memorial Plaques') },
+            { text: 'Memorials', link: route('memorials') },
         ],
     },
     {
@@ -30,6 +22,7 @@ const menus = ref([
             { text: 'FAQ', link: '/faqs' },
             { text: 'Returns', link: '#' },
             { text: 'Contact Us', link: '/contact' },
+            { text: 'About Us', link: '/about' },
         ],
     },
 ]);
@@ -38,10 +31,10 @@ const menus = ref([
 <template>
     <footer class="bg-primary text-primary-foreground relative z-10 pt-20 pb-10 lg:pt-[120px] xl:pb-20">
         <div class="container mx-auto max-w-7xl px-4 md:px-8 xl:px-0">
-            <div class="flex flex-wrap">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                 <!-- Logo and description -->
 
-                <div class="mb-10 w-full px-4 sm:w-2/3 lg:w-3/12">
+                <div class="mb-10 w-full px-4">
                     <Link :href="route('home')" class="mb-6 flex items-center">
                         <AppLogoIcon class="w-fit" />
                         <span class="ml-2 text-xl font-semibold">Everstone</span>
@@ -55,7 +48,7 @@ const menus = ref([
                 </div>
 
                 <!-- Dynamic Menu Sections -->
-                <div v-for="menu in menus" :key="menu.title" class="mb-10 w-full px-4 sm:w-1/2 lg:w-2/12">
+                <div v-for="menu in menus" :key="menu.title" class="mb-10 w-full px-4">
                     <h4 class="mb-5 text-lg font-semibold">
                         {{ menu.title }}
                     </h4>
@@ -69,7 +62,7 @@ const menus = ref([
                 </div>
 
                 <!-- Social Section -->
-                <div class="mb-10 w-full px-4 sm:w-1/2 lg:w-3/12">
+                <div class="mb-10 w-full px-4">
                     <h4 class="mb-5 text-lg font-semibold">Follow Us On</h4>
                     <div class="flex space-x-4">
                         <a href="#" class="flex h-8 w-8 items-center justify-center rounded-full border">
