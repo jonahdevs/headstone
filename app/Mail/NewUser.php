@@ -28,7 +28,7 @@ class NewUser extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New User',
+            subject: 'Welcome to Everstone',
         );
     }
 
@@ -38,7 +38,10 @@ class NewUser extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mails.new-user',
+            with: [
+                'user' => $this->user,
+            ]
         );
     }
 

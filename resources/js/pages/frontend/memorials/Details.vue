@@ -464,7 +464,7 @@ const handleSubmit = (memorialId) => {
                                                         :class="
                                                             i <= testimony.rating
                                                                 ? 'fill-yellow-500 stroke-yellow-500'
-                                                                : 'dark:stoke-stone-800 fill-stone-300 stroke-stone-300 dark:fill-stone-800'
+                                                                : 'fill-stone-300 stroke-stone-300 dark:fill-stone-800 dark:stroke-stone-800'
                                                         "
                                                     />
                                                 </template>

@@ -38,7 +38,7 @@ const memorials = order.memorials;
         <PageHeaderSection :title="'Checkout Success'" :links="pageSectionLinks" />
 
         <section class="flex min-h-screen items-center justify-center px-6 py-12 sm:px-12">
-            <div class="bg-secondary text-secondary-foreground w-full max-w-3xl rounded-xl border p-8">
+            <div class="bg-card text-secondary-foreground w-full max-w-3xl rounded-xl border p-8">
                 <!-- Header -->
                 <div class="border-b pb-6 text-center">
                     <h1 class="mb-2 text-2xl font-semibold text-green-700 dark:text-green-400">Order Successfully Placed</h1>
@@ -69,12 +69,12 @@ const memorials = order.memorials;
 
                     <!-- Item 1 -->
                     <template v-for="memorial in memorials" :key="memorial.id">
-                        <div class="mb-4 rounded-lg border bg-slate-50 p-4">
-                            <h3 class="font-medium text-stone-800">{{ memorial.title }}</h3>
-                            <p class="text-sm text-stone-600">Material: {{ memorial.materials.join(', ') }}</p>
-                            <p class="text-sm text-stone-600">Quantity: {{ memorial.quantity }}</p>
-                            <p class="text-sm text-stone-600">Estimated Delivery: {{ memorial.estimated_delivery }}</p>
-                            <p class="text-sm font-semibold text-stone-800">{{ memorial.total }}</p>
+                        <div class="bg-secondary mb-4 rounded-lg border p-4">
+                            <h3 class="font-medium">{{ memorial.title }}</h3>
+                            <p class="text-secondary-foreground text-sm">Material: {{ memorial.materials.join(', ') }}</p>
+                            <p class="text-secondary-foreground text-sm">Quantity: {{ memorial.quantity }}</p>
+                            <p class="text-secondary-foreground text-sm">Estimated Delivery: {{ memorial.estimated_delivery }}</p>
+                            <p class="text-sm font-semibold">{{ memorial.total }}</p>
                         </div>
                     </template>
                 </div>
@@ -100,7 +100,7 @@ const memorials = order.memorials;
 
                 <!-- Actions -->
                 <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                    <Button>View My Orders</Button>
+                    <Button @click="router.visit(route('customer.orders'))">View My Orders</Button>
                     <Button @click="router.visit(route('home'))" variant="outline" class="border-primary border dark:border-white"
                         >Return to Homepage</Button
                     >

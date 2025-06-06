@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -27,7 +28,7 @@ class NewUser extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -49,7 +50,26 @@ class NewUser extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => "<strong>{$this->user?->name}</strong> has joined",
         ];
+    }
+
+    public function broadcastType(): string
+    {
+        return 'new-user';
+    }
+
+    public function databaseType(object $notifiable): string
+    {
+        return 'new-user';
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'data' => $this->toArray($notifiable),
+            'id' => $this->id,
+            'time' => now()->diffForHumans(),
+        ]);
     }
 }

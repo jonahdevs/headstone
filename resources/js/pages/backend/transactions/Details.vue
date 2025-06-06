@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import axios from 'axios';
 import { LoaderIcon, Printer, Receipt, ShoppingBag, User } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 const props = defineProps({ transaction: Object });
 const breadcrumbs = [
@@ -42,7 +44,42 @@ const transactionStatusClasses = (status) => {
     }
 };
 
-const downloadReceipt = async (transactionId) => {};
+const downloadReceipt = async (transactionId) => {
+    try {
+        downloadingReceipt.value = true;
+        const response = await axios.get(route('admin.transactions.download', transactionId), {
+            responseType: 'blob', // Important!
+        });
+
+        if (response.status === 200) {
+            downloadingReceipt.value = false;
+        }
+        // Extract filename from headers (optional but useful)
+        const disposition = response.headers['content-disposition'];
+        let filename = 'receipt.pdf';
+        if (disposition && disposition.includes('filename=')) {
+            filename = disposition.split('filename=')[1].replace(/["']/g, '');
+        }
+
+        // Create a temporary link and trigger the download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        window.URL.revokeObjectURL(url); // Clean up
+    } catch (error) {
+        downloadingReceipt.value = false;
+        if (error.response && error.response.status === 404) {
+            toast.error('File not found.');
+        } else {
+            toast.error('Something went wrong while downloading.');
+        }
+    }
+};
 </script>
 
 <template>

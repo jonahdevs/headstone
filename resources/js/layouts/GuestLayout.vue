@@ -8,7 +8,7 @@ import 'vue-sonner/style.css';
 <template>
     <AppBar />
 
-    <section class="min-h-[87svh]">
+    <section class="min-h-[89svh]">
         <slot />
     </section>
 

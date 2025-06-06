@@ -85,7 +85,7 @@ const markAllAsRead = () => {
 
                         <span
                             v-if="notificationsCount > 0"
-                            class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                            class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
                         >
                             {{ notificationsCount }}
                         </span>
@@ -104,7 +104,7 @@ const markAllAsRead = () => {
                                 <template v-else-if="notification.type.includes('quotation')">📃</template>
                                 <template v-else-if="notification.type.includes('user')">👤</template>
                                 <template v-else-if="notification.type.includes('message')">📩</template>
-                                <p class="text-sm font-medium" v-html="notification.data.title"></p>
+                                <p class="ms-1 text-sm font-medium" v-html="notification.data.title"></p>
                             </div>
                             <p class="text-muted-foreground text-xs">{{ notification.time }}</p>
                         </div>

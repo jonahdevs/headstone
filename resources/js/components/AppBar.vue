@@ -1,8 +1,9 @@
 <script setup>
 import { useAppearance } from '@/composables/useAppearance';
 import { Link, router, usePage } from '@inertiajs/vue3';
-import { ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { useEchoModel } from '@laravel/echo-vue';
+import { Bell, ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 import AppLogoIcon from './AppLogoIcon.vue';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
@@ -14,8 +15,17 @@ const cart_items = computed(() => page.props.cart_items);
 const user = computed(() => page.props.auth.user);
 const { appearance, updateAppearance } = useAppearance();
 const modes = ['light', 'dark', 'system'];
+const notificationsCount = ref(page.props.notificationsCount);
+
+if (user.value) {
+    const { channel } = useEchoModel('App.Models.User', user.value?.id);
+    channel().notification(() => {
+        notificationsCount.value++;
+    });
+}
 
 const smallNavLinks = [
+    { title: 'Home', href: '/' },
     { title: 'About', href: '/about' },
     { title: 'Faqs', href: '/faqs' },
     { title: 'Quotation', href: '/quotation' },
@@ -173,21 +183,49 @@ const appearanceIcon = computed(() => {
 
                 <DropdownMenu v-else class="max-lg:hidden">
                     <DropdownMenuTrigger>
-                        <Avatar>
-                            <AvatarImage :src="user?.avatar" />
-                            <AvatarFallback>{{ user?.name.charAt(0) }}</AvatarFallback>
-                        </Avatar>
+                        <div class="relative w-fit">
+                            <Avatar>
+                                <AvatarImage :src="user?.avatar" />
+                                <AvatarFallback>{{ user?.name.charAt(0) }}</AvatarFallback>
+                            </Avatar>
+                            <div
+                                v-if="notificationsCount > 0"
+                                class="absolute top-1 right-1 h-2.5 w-2.5 translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500"
+                            >
+                                <span class="absolute inset-0 inline-flex h-2.5 w-2.5 animate-ping rounded-full bg-red-400 opacity-75"></span>
+                            </div>
+                        </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent class="min-w-44 p-0" align="end">
-                        <Link href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900">
+                        <Link
+                            :href="route('customer.account')"
+                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                        >
                             <User class="h-4 w-4" />
                             Account
                         </Link>
-                        <Link href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900">
+                        <Link
+                            :href="route('customer.orders')"
+                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                        >
                             <ShoppingBag class="h-4 w-4" />
                             Orders
                         </Link>
-                        <div class="border-t px-3 py-1 pt-2">
+                        <Link
+                            :href="route('customer.notifications')"
+                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                        >
+                            <Bell class="h-4 w-4" />
+                            Notifications
+
+                            <span
+                                v-if="notificationsCount"
+                                class="ms-auto flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                            >
+                                {{ notificationsCount }}
+                            </span>
+                        </Link>
+                        <div class="border-t px-2 py-2">
                             <Button @click="router.post(route('logout'))" class="w-full">Logout</Button>
                         </div>
                     </DropdownMenuContent>

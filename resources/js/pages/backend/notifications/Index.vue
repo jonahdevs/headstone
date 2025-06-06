@@ -75,7 +75,7 @@ const loadMore = () => {
                         class="rounded-md border p-4 shadow-sm"
                         :class="{
                             'border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950': !notification.read_at,
-                            '': notification.read_at,
+                            'bg-card': notification.read_at,
                         }"
                     >
                         <div class="flex items-start justify-between">
@@ -85,11 +85,15 @@ const loadMore = () => {
                                     <template v-else-if="notification.type.includes('quotation')">📃</template>
                                     <template v-else-if="notification.type.includes('user')">👤</template>
                                     <template v-else-if="notification.type.includes('message')">📩</template>
-                                    <p class="text-sm font-medium text-slate-800" v-html="notification.data.title"></p>
+                                    <p class="ms-1 text-sm font-medium" v-html="notification.data.title"></p>
                                 </div>
                                 <p class="text-muted-foreground mt-1 text-xs">{{ notification.time }}</p>
                             </div>
-                            <span v-if="!notification.read_at" class="inline-block rounded-full bg-blue-600 px-2 py-0.5 text-xs">New</span>
+                            <span
+                                v-if="!notification.read_at"
+                                class="inline-block rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white dark:bg-blue-400 dark:text-black"
+                                >New</span
+                            >
                         </div>
                     </div>
                 </template>

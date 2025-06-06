@@ -165,7 +165,7 @@ const updatePage = (page) => {
                     </template>
 
                     <template v-if="memorials.data.length < 1">
-                        <section class="text-muted-foreground flex w-full flex-col items-center justify-center gap-2">
+                        <section class="text-muted-foreground flex min-h-[40svh] w-full flex-col items-center justify-center gap-2">
                             <NoDataFound />
                         </section>
                     </template>

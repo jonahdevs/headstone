@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -17,7 +18,7 @@ class NewOrder extends Notification
      */
     public function __construct(protected Order $order)
     {
-        //
+        $this->order->load('customer');
     }
 
     /**
@@ -27,7 +28,7 @@ class NewOrder extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -49,7 +50,26 @@ class NewOrder extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => "New order from <strong>{$this->order->customer->name}</strong>",
         ];
+    }
+
+    public function broadcastType(): string
+    {
+        return 'new-order';
+    }
+
+    public function databaseType(object $notifiable): string
+    {
+        return 'new-order';
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'data' => $this->toArray($notifiable),
+            'id' => $this->id,
+            'time' => now()->diffForHumans(),
+        ]);
     }
 }

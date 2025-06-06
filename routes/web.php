@@ -16,20 +16,41 @@ use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\TagsController;
 use App\Http\Controllers\Backend\TransactionsController;
 use App\Http\Controllers\Backend\UsersController;
+use App\Http\Controllers\Customer\AccountController;
+use App\Http\Controllers\Customer\DownloadReceiptController;
+use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\QuotationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/about', AboutController::class)->name('about');
+
+// quotation controller
+Route::controller(QuotationController::class)->group(function () {
+    Route::get('quotation', 'index')->name('quotation');
+    Route::post('quotation', 'store')->name('quotation.store');
+});
+
+// contact routes
+Route::controller(ContactController::class)->group(function () {
+    Route::get('contact', 'index')->name('contact');
+    Route::post('contact', 'store')->name('contact.store');
+});
+
 Route::controller(\App\Http\Controllers\Frontend\MemorialsController::class)->group(function () {
     Route::get('memorials', 'index')->name('memorials');
     Route::get('memorials/category/{category}', 'byCategory')->name('memorials.byCategory');
     Route::get('memorials/{memorial}', 'show')->name('memorials.show');
 });
+
+Route::get('faqs', \App\Http\Controllers\Frontend\FaqsController::class)->name('faqs');
 
 // cart
 Route::controller(CartController::class)->group(function () {
@@ -45,6 +66,30 @@ Route::controller(CheckoutController::class)->middleware('auth')->group(function
     Route::get('checkout/callback', 'callback')->name('checkout.callback');
     Route::get('checkout/success', 'checkoutSuccess')->name('checkout.success');
     Route::get('checkout/error', 'checkoutError')->name('checkout.error');
+});
+
+// customers routes
+
+Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer.')->group(function () {
+
+    Route::controller(AccountController::class)->group(function () {
+        Route::get('account', 'index')->name('account');
+        Route::put('account', 'update')->name('account.update');
+        Route::put('account/password', 'password')->name('account.password');
+    });
+
+    Route::controller(\App\Http\Controllers\Customer\OrdersController::class)->group(function () {
+        Route::get('orders', 'index')->name('orders');
+        Route::get('orders/{order}', 'show')->name('orders.show');
+    });
+
+    Route::get('orders/{order}/download', DownloadReceiptController::class)->name('orders.download');
+
+    Route::controller(\App\Http\Controllers\Customer\NotificationsController::class)->group(function () {
+        Route::get('notifications', 'index')->name('notifications');
+        Route::get('notifications/unread', 'unread')->name('notifications.unread');
+        Route::post('notifications/mark-as-read', 'markAsRead')->name('notifications.markAsRead');
+    });
 });
 
 Route::middleware(['auth', 'role:admin|manager'])->prefix('admin')->name('admin.')->group(function () {
@@ -66,6 +111,11 @@ Route::middleware(['auth', 'role:admin|manager'])->prefix('admin')->name('admin.
     Route::resource('orders', OrdersController::class);
     Route::resource('transactions', TransactionsController::class);
     Route::resource('quotations', QuotationsController::class);
+
+    Route::controller(\App\Http\Controllers\Backend\DownloadReceiptController::class)->group(function () {
+        Route::get('orders/{order}/download', 'orderDownload')->name('orders.download');
+        Route::get('transactions/{transaction}/download', 'transactionDownload')->name('transactions.download');
+    });
 
     Route::resource('reviews', ReviewsController::class);
     Route::resource('faqs', FaqsController::class);
