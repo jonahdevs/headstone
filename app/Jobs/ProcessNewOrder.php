@@ -81,7 +81,7 @@ class ProcessNewOrder implements ShouldQueue
             'order' => $formattedOrder,
         ];
 
-        $pdf = Pdf::loadView('payment-receipt', ['data' => $payload]);
+        $pdf = Pdf::loadView('payment-receipt', ['payload' => $payload]);
         $filePath = 'private/receipts/receipt_' . $order->id . '_' . now()->format('YmdHis') . '.pdf';
 
         Storage::put($filePath, $pdf->output());

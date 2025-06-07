@@ -57,16 +57,6 @@ const getUnreadNotifications = () => {
         unreadNotifications.value = response.data;
     });
 };
-
-const markAllAsRead = () => {
-    router.post(
-        route('notifications.markAsRead', {
-            onSuccess: () => {
-                router.reload();
-            },
-        }),
-    );
-};
 </script>
 
 <template>
@@ -92,19 +82,21 @@ const markAllAsRead = () => {
                     </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" class="w-80 rounded-xl border p-0 shadow-sm">
-                    <DropdownMenuLabel class="flex items-center justify-between border-b p-3">
-                        <span class="font-medium tracking-wide">Notifications</span>
-                        <button v-if="unreadNotifications.length > 0" @click="markAllAsRead" class="text-xs text-blue-500">Mark all as read</button>
+                    <DropdownMenuLabel class="border-b p-3">
+                        <p class="font-medium tracking-wide">Notifications</p>
                     </DropdownMenuLabel>
 
-                    <div v-if="unreadNotifications.length > 0" class="dark max-h-72 divide-y overflow-auto bg-stone-100 text-sm dark:bg-stone-900">
-                        <div v-for="notification in unreadNotifications" :key="notification.id" class="gap-5 space-y-1 p-4 hover:bg-stone-50">
+                    <div
+                        v-if="unreadNotifications.length > 0"
+                        class="bg-muted max-h-72 divide-y divide-stone-300 overflow-auto text-sm dark:divide-stone-700"
+                    >
+                        <div v-for="notification in unreadNotifications" :key="notification.id" class="hover:bg-secondary gap-5 space-y-1 p-4">
                             <div class="flex flex-1">
                                 <template v-if="notification.type.includes('order')">🛒</template>
                                 <template v-else-if="notification.type.includes('quotation')">📃</template>
                                 <template v-else-if="notification.type.includes('user')">👤</template>
                                 <template v-else-if="notification.type.includes('message')">📩</template>
-                                <p class="ms-1 text-sm font-medium" v-html="notification.data.title"></p>
+                                <p class="ms-1 text-sm" v-html="notification.data.title"></p>
                             </div>
                             <p class="text-muted-foreground text-xs">{{ notification.time }}</p>
                         </div>

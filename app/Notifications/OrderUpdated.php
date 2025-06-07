@@ -50,7 +50,7 @@ class OrderUpdated extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => "<strong>Order #{$this->order->id}</strong> has been marked as <span style='color: #22c55e'>{$this->order->status}</span>",
+            'title' => "<span class='font-medium text-primary'>Order #{$this->order->id}</span> has been marked as <span style='color: #22c55e'>{$this->order->status}</span>",
         ];
     }
 

@@ -50,7 +50,7 @@ class NewUser extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => "<strong>{$this->user?->name}</strong> has joined",
+            'title' => "<span class='font-medium text-primary'>{$this->user?->name}</span> has joined",
         ];
     }
 

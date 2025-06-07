@@ -73,7 +73,7 @@ onUnmounted(() => {
                                     <template v-else-if="notification.type.includes('quotation')">📃</template>
                                     <template v-else-if="notification.type.includes('user')">👤</template>
                                     <template v-else-if="notification.type.includes('message')">📩</template>
-                                    <p class="ms-1 text-sm font-medium" v-html="notification.data.title"></p>
+                                    <p class="ms-1 text-sm" v-html="notification.data.title"></p>
                                 </div>
                                 <p class="text-muted-foreground mt-1 text-xs">{{ notification.time }}</p>
                             </div>

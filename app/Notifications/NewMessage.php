@@ -49,7 +49,7 @@ class NewMessage extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => "New message from <strong>{$this->data['name']}</strong>",
+            'title' => "New message from <span class='font-semibold text-primary'>{$this->data['name']}</span>",
             'subject' => $this->data['subject'],
             'message' => $this->data['message'],
         ];

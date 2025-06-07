@@ -52,7 +52,7 @@ class NewQuotation extends Notification
         $name = $this->quotation->customer->name ?? $this->quotation->name;
 
         return [
-            'title' => "New quotation from <strong>{$name}</strong>",
+            'title' => "New quotation from <span class='font-primary text-primary'>{$name}</span>",
         ];
     }
 

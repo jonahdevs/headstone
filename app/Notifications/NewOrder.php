@@ -50,7 +50,7 @@ class NewOrder extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => "New order from <strong>{$this->order->customer->name}</strong>",
+            'title' => "New order from <span class='font-medium text-primary'>{$this->order->customer->name}</span>",
         ];
     }
 

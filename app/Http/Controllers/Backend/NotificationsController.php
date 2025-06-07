@@ -26,6 +26,6 @@ class NotificationsController extends Controller
     {
         $request->user()->unreadNotifications->markAsRead();
 
-        return back();
+        return;
     }
 }
