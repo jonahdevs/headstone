@@ -24,11 +24,58 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\QuotationController;
-use Illuminate\Support\Facades\Route;
+use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 
 Route::get('test', function () {
-    return view('mails.quotation-reply');
+    $order = Order::with('memorials', 'customer', 'payment')->find(1);
+    $formattedOrder = (object) [
+        'id' => $order->id,
+        'items' => $order->memorials_count,
+        'subtotal' => Number::currency($order->subtotal ?? 0, 'kes'),
+        'discount' => Number::currency($order->discount ?? 0, 'kes'),
+        'delivery_fee' => Number::currency(0, 'kes'),
+        'total' => Number::currency($order->total ?? 0, 'kes'),
+        'date' => $order->created_at->format('Y/m/d H:i:s'),
+        'memorials' => $order->memorials->map(fn($memorial) => (object) [
+            'id' => $memorial->id,
+            'title' => $memorial->title,
+            'quantity' => $memorial->pivot->quantity,
+            'price' => Number::currency($memorial->pivot->price ?? 0, 'kes'),
+            'total' => Number::currency($memorial->pivot->total ?? 0, 'kes'),
+        ]),
+        'customer' => (object) [
+            'name' => $order->customer->name,
+            'email' => $order->customer->email,
+            'address' => $order->customer->address,
+            'phone' => $order->customer->phone,
+        ],
+        'payment' => (object) [
+            'transaction_id' => $order->payment->transaction_id,
+            'amount' => Number::currency($order->payment->amount ?? 0, 'kes'),
+            'payment_method' => $order->payment->payment_method,
+            'status' => $order->payment->status,
+        ]
+    ];
+
+    $payload = (object) [
+        'name' => 'Everstone',
+        'address' => 'Thika Town, Kiambu County, Kenya',
+        'phone' => '+254 700 000 000',
+        'email' => 'contact@everstone.co.ke',
+        'date' => now()->format('d M Y'),
+        'order' => $formattedOrder,
+    ];
+
+    $pdf = Pdf::loadView('payment-receipt', ['payload' => $payload]);
+    $filePath = 'receipts/receipt_' . $order->id . '_' . now()->format('YmdHis') . '.pdf';
+
+    Storage::put($filePath, $pdf->output());
+
+    $order->payment()->update([
+        'payment_receipt' => $filePath
+    ]);
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');

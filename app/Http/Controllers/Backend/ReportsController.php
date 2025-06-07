@@ -8,6 +8,7 @@ use App\Models\Memorial;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -204,22 +205,25 @@ class ReportsController extends Controller
                 'data' => $data,
             ];
 
-            $html = view('reports', ['payload' => $payload])->render();
+            // $html = view('reports', ['payload' => $payload])->render();
 
             // Generate PDF from the HTML
-            $pdfContent = $browsershot->html($html)
-                ->showBackground()
-                ->landscape()
-                ->margins(4, 0, 4, 0)
-                ->pdf();
+            // $pdfContent = $browsershot->html($html)
+            //     ->showBackground()
+            //     ->landscape()
+            //     ->margins(4, 0, 4, 0)
+            //     ->pdf();
 
+            $pdf = Pdf::loadView('reports', ['payload' => $payload])->setPaper('A4', 'landscape');
             // Generate a download response
             $fileName = 'report-' . Str::random(6) . '.pdf';
 
-            return response($pdfContent, 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-            ]);
+            // return response($pdfContent, 200, [
+            //     'Content-Type' => 'application/pdf',
+            //     'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            // ]);
+
+            return $pdf->download($fileName);
         } else if ($documentType === 'excel' || $documentType === 'csv') {
 
             $data = json_decode($data, true);

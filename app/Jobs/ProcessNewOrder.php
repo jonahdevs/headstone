@@ -5,10 +5,12 @@ namespace App\Jobs;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\NewOrder;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Spatie\Browsershot\Browsershot;
 
@@ -34,6 +36,8 @@ class ProcessNewOrder implements ShouldQueue
         // send a notification to system operators
         $operators = User::operators()->get();
         Notification::send($operators, new NewOrder($order));
+
+        Mail::to($order->customer->email)->send(new \App\Mail\NewOrder($order));
 
         if (!$order->payment || $order->payment->status != 'success') {
             return;
@@ -77,18 +81,14 @@ class ProcessNewOrder implements ShouldQueue
             'order' => $formattedOrder,
         ];
 
-        $html = view('payment-receipt', ['payload' => $payload])->render();
+        $pdf = Pdf::loadView('payment-receipt', ['data' => $payload]);
+        $filePath = 'private/receipts/receipt_' . $order->id . '_' . now()->format('YmdHis') . '.pdf';
 
-        $filename = 'receipt-' . $order->id . '-' . now()->format('YmdHis') . '.pdf';
-        Browsershot::html($html)
-            ->showBackground()
-            ->margins(8, 8, 8, 8)
-            ->save(storage_path("/app/private/receipts/{$filename}"));
+        Storage::put($filePath, $pdf->output());
 
         $order->payment()->update([
-            'payment_receipt' => "receipts/{$filename}"
+            'payment_receipt' => $filePath
         ]);
 
-        Mail::to($order->customer->email)->send(new \App\Mail\NewOrder($order));
     }
 }
