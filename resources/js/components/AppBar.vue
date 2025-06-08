@@ -4,6 +4,7 @@ import { Link, router, usePage } from '@inertiajs/vue3';
 import { useEchoModel } from '@laravel/echo-vue';
 import { Bell, ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
 import { computed, reactive, ref } from 'vue';
+import AppLogo from './AppLogo.vue';
 import AppLogoIcon from './AppLogoIcon.vue';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
@@ -27,6 +28,8 @@ if (user.value) {
         notificationsCount.value++;
     });
 }
+
+console.log(page);
 
 const smallNavLinks = [
     { title: 'Home', href: '/' },
@@ -63,7 +66,7 @@ const handleSearch = () => {
 <template>
     <header class="bg-primary text-primary-foreground">
         <div class="container mx-auto flex max-w-7xl items-center px-4 md:px-8 xl:px-0">
-            <div class="flex flex-wrap items-center gap-4 py-3">
+            <div class="flex flex-wrap items-center gap-4 gap-y-2 py-3">
                 <div class="flex items-center gap-2">
                     <Mail class="size-4" />
                     <a href="mailto:info@everstone.co.ke" class="text-sm">info@everstone.co.ke</a>
@@ -89,17 +92,12 @@ const handleSearch = () => {
 
     <header class="bg-primary-foreground">
         <div class="@container/nav mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 xl:px-0">
-            <Link :href="route('home')" class="hidden items-center gap-2 py-5 max-lg:order-2 @xs/nav:flex">
-                <div class="flex aspect-square size-8 items-center justify-center">
-                    <AppLogoIcon />
-                </div>
-                <div class="ml-1 grid flex-1 text-left text-sm">
-                    <span class="mb-0.5 truncate text-xl leading-none font-semibold">Everstone</span>
-                </div>
+            <Link :href="route('home')" class="items-center gap-2 py-5 max-lg:hidden">
+                <AppLogo />
             </Link>
 
             <!-- mobile menus -->
-            <Sheet class="order-1 lg:hidden">
+            <Sheet class="lg:hidden">
                 <SheetTrigger as-child class="lg:hidden">
                     <Button variant="secondary" size="sm">
                         <ListMinus />

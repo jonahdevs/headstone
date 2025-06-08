@@ -7,6 +7,6 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
         <AppLogoIcon />
     </div>
     <div class="ml-1 grid flex-1 text-left text-sm">
-        <span class="mb-0.5 truncate text-xl leading-none font-semibold">Everstone</span>
+        <span class="font-orbitron mb-0.5 truncate text-xl leading-none font-extrabold uppercase">Everstone</span>
     </div>
 </template>

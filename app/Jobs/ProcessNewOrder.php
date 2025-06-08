@@ -37,7 +37,7 @@ class ProcessNewOrder implements ShouldQueue
         $operators = User::operators()->get();
         Notification::send($operators, new NewOrder($order));
 
-        Mail::to($order->customer->email)->send(new \App\Mail\NewOrder($order));
+
 
         if (!$order->payment || $order->payment->status != 'success') {
             return;
@@ -90,5 +90,7 @@ class ProcessNewOrder implements ShouldQueue
             'payment_receipt' => $filePath
         ]);
 
+
+        Mail::to($order->customer->email)->send(new \App\Mail\NewOrder($order));
     }
 }

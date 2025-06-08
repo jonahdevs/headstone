@@ -171,7 +171,7 @@ const handleSubmit = (memorialId) => {
                 <div class="space-y-4">
                     <h1 class="text-2xl font-bold">{{ memorial.data.title }}</h1>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3 gap-y-1.5">
                         <p :class="{ 'text-lg font-bold text-slate-400 line-through': memorial.data.sale_price }" class="text-lg font-semibold">
                             {{ memorial.data.price }}
                         </p>
@@ -198,7 +198,9 @@ const handleSubmit = (memorialId) => {
                                         as per your instructions.
                                     </p>
                                 </div>
+                            </DialogHeader>
 
+                            <form @submit.prevent="handleSubmit(memorial.data.id)" class="grid gap-4 overflow-y-auto border-y px-4 py-4 md:px-6">
                                 <!-- Tips Section -->
                                 <div class="bg-secondary text-secondary-foreground rounded-md p-2 text-sm md:p-4">
                                     <p class="mb-1 font-medium">Tips:</p>
@@ -208,9 +210,7 @@ const handleSubmit = (memorialId) => {
                                         <li>Portraits should be high quality and front-facing.</li>
                                     </ul>
                                 </div>
-                            </DialogHeader>
 
-                            <form @submit.prevent="handleSubmit(memorial.data.id)" class="grid gap-4 overflow-y-auto border-y px-4 py-4 md:px-6">
                                 <section class="@container/form space-y-6 rounded-xl">
                                     <!-- inputs grid -->
                                     <div class="grid grid-cols-1 gap-4 @xl/form:grid-cols-2">

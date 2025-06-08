@@ -36,7 +36,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
             </div>
         </section>
 
-        <section class="container mx-auto grid max-w-7xl grid-cols-1 gap-5 px-4 py-16 sm:grid-cols-2 md:px-8 lg:grid-cols-4 xl:px-0">
+        <section class="noisy-gradient container mx-auto grid max-w-7xl grid-cols-1 gap-5 px-4 py-16 sm:grid-cols-2 md:px-8 lg:grid-cols-4 xl:px-0">
             <div class="flex flex-col items-center text-center">
                 <svg class="size-16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0" fill="currentColor">
                     <path
@@ -156,7 +156,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
             </div>
         </section>
 
-        <section class="@container container mx-auto max-w-7xl px-4 py-16 md:px-8 xl:px-0">
+        <section class="noisy-gradient @container container mx-auto max-w-7xl px-4 py-16 md:px-8 xl:px-0">
             <div class="flex flex-col items-center gap-3">
                 <div class="flex items-center gap-3">
                     <AppLogoIcon class="w-6" />

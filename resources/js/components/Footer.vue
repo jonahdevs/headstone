@@ -87,7 +87,7 @@ const menus = ref([
         </div>
     </footer>
     <footer class="bg-primary text-primary-foreground border-t py-3">
-        <div class="container mx-auto max-w-7xl text-center">
+        <div class="container mx-auto max-w-7xl px-4 text-center md:px-8 xl:px-0">
             <p class="text-sm">
                 Made with ❤️ by <a href="https://jonahdevs.co.ke" target="_blank" class="underline">Jonahdevs</a>. &copy;
                 {{ new Date().getFullYear() }} All rights reserved
