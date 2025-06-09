@@ -23,7 +23,7 @@ const filters = reactive({
     search: props.filters?.search || '',
     status: props.filters?.status || '',
 });
-
+const user = usePage().props.auth.user;
 const breadcrumbs = [
     {
         title: 'Dashboard',
@@ -34,6 +34,8 @@ const breadcrumbs = [
         href: '/admin/customers',
     },
 ];
+
+console.log(user);
 
 const applyFilters = () => {
     if (filters.status === 'all') filters.status = '';
@@ -100,7 +102,12 @@ onMounted(() => {
         <template #pageTitle> Customers List </template>
 
         <template #pageActions>
-            <Button @click="router.visit(route('admin.customers.create'))" size="sm" class="text-xs uppercase">
+            <Button
+                v-if="user.permissions.includes('create customers')"
+                @click="router.visit(route('admin.customers.create'))"
+                size="sm"
+                class="text-xs uppercase"
+            >
                 <PlusCircle class="size-4" /> Add New Customer
             </Button>
         </template>
@@ -218,15 +225,20 @@ onMounted(() => {
                         <!-- actions read delete and view -->
                         <TableCell>
                             <div class="flex items-center gap-3">
-                                <!-- <Button size="sm" @click="router.visit(route('admin.customers.show', customer.id))">
-                                        <Eye class="w-4 h-4" />
-                                    </Button> -->
-
-                                <Button size="sm" @click="router.visit(route('admin.customers.edit', customer.id))">
+                                <Button
+                                    v-if="user.permissions.includes('edit customers')"
+                                    size="sm"
+                                    @click="router.visit(route('admin.customers.edit', customer.id))"
+                                >
                                     <Edit2 class="h-4 w-4" />
                                 </Button>
 
-                                <Button size="sm" @click="deleteCustomer(customer.id)" variant="destructive">
+                                <Button
+                                    v-if="user.permissions.includes('delete customers')"
+                                    size="sm"
+                                    @click="deleteCustomer(customer.id)"
+                                    variant="destructive"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </Button>
                             </div>

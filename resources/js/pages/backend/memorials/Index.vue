@@ -13,6 +13,7 @@ import { computed, onMounted, reactive, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
 
 const props = defineProps({
     memorials: Object,
@@ -81,7 +82,11 @@ onMounted(() => {
         <template #pageTitle> Memorials </template>
 
         <template #pageActions>
-            <Button @click="router.visit(route('admin.memorials.create'))" class="text-xs uppercase">
+            <Button
+                v-if="user.permissions.includes('create memorials')"
+                @click="router.visit(route('admin.memorials.create'))"
+                class="text-xs uppercase"
+            >
                 <PlusCircle class="size-4" />Add New Memorial
             </Button>
         </template>

@@ -13,6 +13,8 @@ import { computed, onMounted, reactive, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
+
 const props = defineProps({
     orders: Object,
     filters: Object,
@@ -242,10 +244,19 @@ onMounted(() => {
                         <TableCell>{{ order.total }}</TableCell>
                         <TableCell>
                             <div class="flex items-center gap-2">
-                                <Button @click="router.visit(route('admin.orders.show', order.id))" size="sm">
+                                <Button
+                                    v-if="user.permissions.includes('edit orders')"
+                                    @click="router.visit(route('admin.orders.show', order.id))"
+                                    size="sm"
+                                >
                                     <Eye class="h-4 w-4" />
                                 </Button>
-                                <Button variant="destructive" size="sm" @click="deleteOrder(order.id)">
+                                <Button
+                                    v-if="user.permissions.includes('delete orders')"
+                                    variant="destructive"
+                                    size="sm"
+                                    @click="deleteOrder(order.id)"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </Button>
                             </div>

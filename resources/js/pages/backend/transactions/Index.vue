@@ -13,6 +13,8 @@ import { computed, onMounted, reactive, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
+
 const props = defineProps({
     transactions: Object,
     filters: Object,
@@ -193,10 +195,19 @@ onMounted(() => {
                         <TableCell>{{ transaction.paid_at }}</TableCell>
                         <TableCell>
                             <div class="flex items-center gap-2">
-                                <Button @click="router.visit(route('admin.transactions.show', transaction.id))" size="sm">
+                                <Button
+                                    v-if="user.permissions.includes('edit transactions')"
+                                    @click="router.visit(route('admin.transactions.show', transaction.id))"
+                                    size="sm"
+                                >
                                     <Eye class="h-4 w-4" />
                                 </Button>
-                                <Button variant="destructive" size="sm" @click="deleteTransaction(transaction.id)">
+                                <Button
+                                    v-if="user.permissions.includes('delete transactions')"
+                                    variant="destructive"
+                                    size="sm"
+                                    @click="deleteTransaction(transaction.id)"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </Button>
                             </div>

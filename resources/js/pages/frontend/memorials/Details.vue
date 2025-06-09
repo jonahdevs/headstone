@@ -315,14 +315,12 @@ const handleSubmit = (memorialId) => {
                                             <label
                                                 v-for="(font, index) in fonts"
                                                 :key="index"
-                                                class="cursor-pointer rounded-xl border bg-white px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md"
-                                                :class="
-                                                    form.font === font ? 'border-primary text-primary font-medium' : 'border-slate-200 text-slate-600'
-                                                "
+                                                class="bg-secondary text-secondary-foreground cursor-pointer rounded-xl border px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md"
+                                                :class="form.font === font ? 'border-primary text-primary font-medium' : 'border'"
                                                 :style="{ fontFamily: font }"
                                             >
                                                 <input type="radio" name="font" class="hidden" :value="font" v-model="form.font" />
-                                                Abc
+                                                Hello
                                             </label>
                                         </div>
                                         <InputError :message="form.errors.font" />

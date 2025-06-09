@@ -44,7 +44,11 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? [
+                    ...$request->user()->only('id', 'name', 'email', 'avatar'),
+                    'permissions' => $request->user()->getAllPermissions()->map(fn($permission) => $permission->name),
+                    'roles' => $request->user()->getRoleNames(),
+                ] : null,
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),

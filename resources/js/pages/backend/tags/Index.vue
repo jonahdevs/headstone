@@ -13,6 +13,8 @@ import { computed, onMounted, reactive, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
+
 const props = defineProps({
     tags: Object,
     filters: Object,
@@ -97,7 +99,9 @@ onMounted(() => {
         <template #pageTitle> Tags List </template>
 
         <template #pageActions>
-            <Button @click="router.visit(route('admin.tags.create'))" class="text-xs uppercase"> <PlusCircle class="size-4" /> Add New Tag </Button>
+            <Button v-if="user.permissions.includes('create tags')" @click="router.visit(route('admin.tags.create'))" class="text-xs uppercase">
+                <PlusCircle class="size-4" /> Add New Tag
+            </Button>
         </template>
 
         <!-- page filters and search -->
@@ -210,11 +214,20 @@ onMounted(() => {
                         <!-- actions read delete and view -->
                         <TableCell>
                             <div class="flex items-center gap-3">
-                                <Button size="sm" @click="router.visit(route('admin.tags.edit', tag.id))">
+                                <Button
+                                    v-if="user.permissions.includes('edit tags')"
+                                    size="sm"
+                                    @click="router.visit(route('admin.tags.edit', tag.id))"
+                                >
                                     <Edit2 class="h-4 w-4" />
                                 </Button>
 
-                                <Button size="sm" @click="deleteCustomer(tag.id)" variant="destructive">
+                                <Button
+                                    v-if="user.permissions.includes('delete tags')"
+                                    size="sm"
+                                    @click="deleteCustomer(tag.id)"
+                                    variant="destructive"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </Button>
                             </div>

@@ -7,11 +7,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Deferred, Head, Link, router } from '@inertiajs/vue3';
+import { Deferred, Head, Link, router, usePage } from '@inertiajs/vue3';
 import { Search, Star } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import { computed, onMounted, reactive, watch } from 'vue';
+import { toast } from 'vue-sonner';
 
 // Your logic goes here
+
+const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
 const props = defineProps({
     reviews: Object,
     filters: Object,
@@ -63,6 +67,27 @@ const statusClasses = (status) => {
             return 'bg-back';
     }
 };
+
+watch(
+    () => flash.value.message,
+    (msg) => {
+        if (msg && msg.type === 'success') {
+            toast.success(msg.body);
+        } else if (msg && msg.type === 'error') {
+            toast.error(msg.body);
+        }
+    },
+);
+
+onMounted(() => {
+    let msg = flash.value.message;
+
+    if (msg && msg.type === 'success') {
+        toast.success(msg.body);
+    } else if (msg && msg.type === 'error') {
+        toast.error(msg.body);
+    }
+});
 </script>
 
 <template>
@@ -182,7 +207,11 @@ const statusClasses = (status) => {
                             {{ review.created_at }}
                         </TableCell>
                         <TableCell>
-                            <Link :href="route('admin.reviews.show', review.id)" class="text-blue-700 hover:underline dark:text-blue-400">
+                            <Link
+                                :href="route('admin.reviews.show', review.id)"
+                                v-if="user.permissions.includes('edit reviews')"
+                                class="text-blue-700 hover:underline dark:text-blue-400"
+                            >
                                 View
                             </Link>
                         </TableCell>

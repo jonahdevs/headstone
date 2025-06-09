@@ -7,10 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Deferred, Head, Link, router } from '@inertiajs/vue3';
+import { Deferred, Head, Link, router, usePage } from '@inertiajs/vue3';
 import { PlusCircle, Search } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import { computed, onMounted, reactive, watch } from 'vue';
+import { toast } from 'vue-sonner';
 
+const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
 const props = defineProps({
     quotations: Object,
     filters: Object,
@@ -75,6 +78,27 @@ const responseStatusColorClasses = (status) => {
             return 'bg-black';
     }
 };
+
+watch(
+    () => flash.value.message,
+    (msg) => {
+        if (msg && msg.type === 'success') {
+            toast.success(msg.body);
+        } else if (msg && msg.type === 'error') {
+            toast.error(msg.body);
+        }
+    },
+);
+
+onMounted(() => {
+    let msg = flash.value.message;
+
+    if (msg && msg.type === 'success') {
+        toast.success(msg.body);
+    } else if (msg && msg.type === 'error') {
+        toast.error(msg.body);
+    }
+});
 </script>
 
 <template>
@@ -84,7 +108,9 @@ const responseStatusColorClasses = (status) => {
         <template #pageTitle> Quotations </template>
 
         <template #pageActions>
-            <Button class="text-xs uppercase"> <PlusCircle class="h-4 w-4" />Add New Quotation </Button>
+            <Button v-if="user.permissions.includes('create quotations')" class="text-xs uppercase">
+                <PlusCircle class="h-4 w-4" />Add New Quotation
+            </Button>
         </template>
 
         <div class="flex flex-wrap items-center gap-4">
@@ -190,7 +216,11 @@ const responseStatusColorClasses = (status) => {
                         <TableCell class="py-4">{{ quote.created_at }}</TableCell>
                         <TableCell class="py-4">{{ quote.deadline }}</TableCell>
                         <TableCell class="py-4">
-                            <Link :href="route('admin.quotations.show', quote.id)" class="text-blue-700 hover:underline dark:text-blue-400">
+                            <Link
+                                :href="route('admin.quotations.show', quote.id)"
+                                class="text-blue-700 hover:underline dark:text-blue-400"
+                                v-if="user.permissions.includes('edit quotations')"
+                            >
                                 View
                             </Link>
                         </TableCell>

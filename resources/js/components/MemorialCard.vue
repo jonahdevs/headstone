@@ -12,7 +12,7 @@ defineProps({
 <template>
     <div class="group relative w-full overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm">
         <!-- Image -->
-        <AspectRatio :ratio="2 / 2" class="overflow-hidden">
+        <AspectRatio :ratio="1 / 1" class="overflow-hidden">
             <img
                 :src="memorial.image"
                 alt="memorial image"

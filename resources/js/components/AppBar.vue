@@ -2,7 +2,7 @@
 import { useAppearance } from '@/composables/useAppearance';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { useEchoModel } from '@laravel/echo-vue';
-import { Bell, ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
+import { Bell, LayoutGrid, ListMinus, Mail, Moon, PhoneCall, Search, ShoppingBag, ShoppingCart, Sun, SunMoon, User } from 'lucide-vue-next';
 import { computed, reactive, ref } from 'vue';
 import AppLogo from './AppLogo.vue';
 import AppLogoIcon from './AppLogoIcon.vue';
@@ -28,8 +28,6 @@ if (user.value) {
         notificationsCount.value++;
     });
 }
-
-console.log(page);
 
 const smallNavLinks = [
     { title: 'Home', href: '/' },
@@ -227,34 +225,46 @@ const handleSearch = () => {
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent class="min-w-44 p-0" align="end">
-                        <Link
-                            :href="route('customer.account')"
-                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
-                        >
-                            <User class="h-4 w-4" />
-                            Account
-                        </Link>
-                        <Link
-                            :href="route('customer.orders')"
-                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
-                        >
-                            <ShoppingBag class="h-4 w-4" />
-                            Orders
-                        </Link>
-                        <Link
-                            :href="route('customer.notifications')"
-                            class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
-                        >
-                            <Bell class="h-4 w-4" />
-                            Notifications
-
-                            <span
-                                v-if="notificationsCount"
-                                class="ms-auto flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                        <template v-if="user.roles.includes('admin') || user.roles.includes('manager')">
+                            <Link
+                                :href="route('admin.dashboard')"
+                                class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
                             >
-                                {{ notificationsCount }}
-                            </span>
-                        </Link>
+                                <LayoutGrid class="h-4 w-4" />
+                                Dashboard
+                            </Link>
+                        </template>
+
+                        <template v-else>
+                            <Link
+                                :href="route('customer.account')"
+                                class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                            >
+                                <User class="h-4 w-4" />
+                                Account
+                            </Link>
+                            <Link
+                                :href="route('customer.orders')"
+                                class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                            >
+                                <ShoppingBag class="h-4 w-4" />
+                                Orders
+                            </Link>
+                            <Link
+                                :href="route('customer.notifications')"
+                                class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-stone-100 dark:hover:bg-stone-900"
+                            >
+                                <Bell class="h-4 w-4" />
+                                Notifications
+
+                                <span
+                                    v-if="notificationsCount"
+                                    class="ms-auto flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                                >
+                                    {{ notificationsCount }}
+                                </span>
+                            </Link>
+                        </template>
                         <div class="border-t px-2 py-2">
                             <Button @click="router.post(route('logout'))" class="w-full">Logout</Button>
                         </div>

@@ -13,6 +13,7 @@ import { computed, onMounted, reactive, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
 const props = defineProps({
     categories: Object,
     filters: Object,
@@ -97,7 +98,11 @@ onMounted(() => {
         <template #pageTitle> Categories List </template>
 
         <template #pageActions>
-            <Button @click="router.visit(route('admin.categories.create'))" class="text-xs uppercase">
+            <Button
+                v-if="user.permissions.includes('create categories')"
+                @click="router.visit(route('admin.categories.create'))"
+                class="text-xs uppercase"
+            >
                 <PlusCircle class="size-4" /> Add New Category
             </Button>
         </template>
@@ -212,11 +217,20 @@ onMounted(() => {
                         <!-- actions read delete and view -->
                         <TableCell>
                             <div class="flex items-center gap-3">
-                                <Button size="sm" @click="router.visit(route('admin.categories.edit', category.id))">
+                                <Button
+                                    v-if="user.permissions.includes('edit categories')"
+                                    size="sm"
+                                    @click="router.visit(route('admin.categories.edit', category.id))"
+                                >
                                     <Edit2 class="h-4 w-4" />
                                 </Button>
 
-                                <Button size="sm" @click="deleteCustomer(category.id)" variant="destructive">
+                                <Button
+                                    v-if="user.permissions.includes('delete categories')"
+                                    size="sm"
+                                    @click="deleteCustomer(category.id)"
+                                    variant="destructive"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </Button>
                             </div>

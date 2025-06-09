@@ -19,6 +19,8 @@ const props = defineProps({
 });
 
 const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
+
 const filters = reactive({
     search: props.filters.search || '',
     status: props.filters.status || '',
@@ -101,7 +103,7 @@ onMounted(() => {
         <template #pageTitle>All Users</template>
 
         <template #pageActions>
-            <Button @click="router.visit(route('admin.users.create'))" class="text-sm uppercase">
+            <Button v-if="user.permissions.includes('create users')" @click="router.visit(route('admin.users.create'))" class="text-sm uppercase">
                 <PlusCircle class="h-4 w-4" stroke="currentColor" />
                 Add New USer
             </Button>

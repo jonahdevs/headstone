@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Deferred, Head, router } from '@inertiajs/vue3';
+import { Deferred, Head, router, usePage } from '@inertiajs/vue3';
 import { Edit, PlusCircle, Search, Trash2 } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import { computed, onMounted, reactive, watch } from 'vue';
+import { toast } from 'vue-sonner';
 
 // Your logic goes here
 const props = defineProps({
@@ -21,6 +22,9 @@ const breadcrumbs = [
     { title: 'Dashboard', href: route('admin.dashboard') },
     { title: 'FAQs', href: route('admin.faqs.index') },
 ];
+
+const flash = computed(() => usePage().props.flash);
+const user = usePage().props.auth.user;
 
 const filters = reactive({
     search: props.filters?.search || '',
@@ -61,6 +65,27 @@ const statusClasses = (status) => {
             return 'bg-black dark:bg-white';
     }
 };
+
+watch(
+    () => flash.value.message,
+    (msg) => {
+        if (msg && msg.type === 'success') {
+            toast.success(msg.body);
+        } else if (msg && msg.type === 'error') {
+            toast.error(msg.body);
+        }
+    },
+);
+
+onMounted(() => {
+    let msg = flash.value.message;
+
+    if (msg && msg.type === 'success') {
+        toast.success(msg.body);
+    } else if (msg && msg.type === 'error') {
+        toast.error(msg.body);
+    }
+});
 </script>
 
 <template>
@@ -69,7 +94,9 @@ const statusClasses = (status) => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <template #pageTitle>FAQs</template>
         <template #pageActions>
-            <Button @click="router.visit(route('admin.faqs.create'))" class="text-xs uppercase"> <PlusCircle class="h-4 w-4" />Add New Faq </Button>
+            <Button v-if="user.permissions.includes('create faqs')" @click="router.visit(route('admin.faqs.create'))" class="text-xs uppercase">
+                <PlusCircle class="h-4 w-4" />Add New Faq
+            </Button>
         </template>
 
         <section class="space-y-6">
@@ -162,10 +189,19 @@ const statusClasses = (status) => {
                             <TableCell>{{ faq.date }}</TableCell>
                             <TableCell>
                                 <div class="flex items-center gap-2">
-                                    <Button @click="router.visit(route('admin.faqs.edit', faq.id))" size="sm">
+                                    <Button
+                                        v-if="user.permissions.includes('edit faqs')"
+                                        @click="router.visit(route('admin.faqs.edit', faq.id))"
+                                        size="sm"
+                                    >
                                         <Edit class="h-4 w-4" />
                                     </Button>
-                                    <Button variant="destructive" size="sm" @click="deleteFaqs(faq.id)">
+                                    <Button
+                                        v-if="user.permissions.includes('delete faqs')"
+                                        variant="destructive"
+                                        size="sm"
+                                        @click="deleteFaqs(faq.id)"
+                                    >
                                         <Trash2 class="h-4 w-4" />
                                     </Button>
                                 </div>
