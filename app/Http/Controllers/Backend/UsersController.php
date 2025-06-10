@@ -10,14 +10,26 @@ use App\Http\Resources\Backend\UsersResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class UsersController extends Controller
+class UsersController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\User', ['index']),
+            new Middleware('can:create,App\Models\User', ['create', 'store']),
+            new Middleware('can:update,App\Models\User', ['edit', 'update']),
+            new Middleware('can:delete,App\Models\User', ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -11,7 +11,7 @@ class UpdateMemorialRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit memorials');
+        return auth()->check() && auth()->user()->hasPermissionTo('update memorials');
     }
 
     /**

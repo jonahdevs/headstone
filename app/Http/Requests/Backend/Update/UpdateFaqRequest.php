@@ -11,7 +11,7 @@ class UpdateFaqRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit faqs');
+        return auth()->check() && auth()->user()->hasPermissionTo('update faqs');
     }
 
     /**

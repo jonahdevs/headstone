@@ -8,10 +8,22 @@ use App\Http\Resources\Backend\Show\ShowReviewResource;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class ReviewsController extends Controller
+class ReviewsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Review', ['index']),
+            new Middleware('can:view,App\Models\Review', ['show']),
+            new Middleware('can:update,App\Models\Review', ['update']),
+            new Middleware('can:delete,quotation', ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

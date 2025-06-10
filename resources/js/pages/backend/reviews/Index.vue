@@ -209,7 +209,7 @@ onMounted(() => {
                         <TableCell>
                             <Link
                                 :href="route('admin.reviews.show', review.id)"
-                                v-if="user.permissions.includes('edit reviews')"
+                                v-if="user.permissions.includes('update reviews')"
                                 class="text-blue-700 hover:underline dark:text-blue-400"
                             >
                                 View

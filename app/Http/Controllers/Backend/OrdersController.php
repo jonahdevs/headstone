@@ -8,10 +8,21 @@ use App\Http\Resources\Backend\Show\ShowOrderResource;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class OrdersController extends Controller
+class OrdersController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Order', ['index']),
+            new Middleware('can:view,order', ['show']),
+            new Middleware('can:update,order', ['update']),
+            new Middleware('can:delete,order', ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

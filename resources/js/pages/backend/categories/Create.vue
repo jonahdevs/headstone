@@ -6,10 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { LoaderCircle } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 const flash = computed(() => usePage().props.flash);
+const saving = ref(false);
+const publishing = ref(false);
+
 const breadcrumbs = [
     {
         title: 'Dashboard',
@@ -33,10 +37,16 @@ const form = useForm({
 });
 
 const createNewCategory = (status) => {
-    form.status = status;
-    form.post(route('admin.categories.store'), {
+    form.transform((data) => ({
+        ...data,
+        status: status,
+    })).post(route('admin.categories.store'), {
         onError: () => {
             toast.error('Failed to create category. Please check the form for errors.');
+        },
+        onFinish: () => {
+            saving.value = false;
+            publishing.value = false;
         },
     });
 };
@@ -60,8 +70,27 @@ watch(
         <template #pageTitle> Create Category </template>
 
         <template #pageActions>
-            <Button @click="createNewCategory('draft')" variant="secondary" :disabled="!form.isDirty || form.processing">Save</Button>
-            <Button @click="createNewCategory('published')" :disabled="!form.isDirty || form.processing">Publish</Button>
+            <Button
+                @click="
+                    createNewCategory('draft');
+                    saving = true;
+                "
+                variant="secondary"
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="saving && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ saving && form.processing ? 'Saving...' : 'Save' }}</span>
+            </Button>
+            <Button
+                @click="
+                    createNewCategory('published');
+                    publishing = true;
+                "
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="publishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ publishing && form.processing ? 'Publishing...' : 'Publish' }}</span>
+            </Button>
         </template>
 
         <form @submit.prevent="createNewCategory" class="@container max-w-5xl">

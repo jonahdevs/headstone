@@ -13,12 +13,23 @@ use App\Models\Memorial;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class MemorialsController extends Controller
+class MemorialsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Memorial', ['index']),
+            new Middleware('can:create,App\Models\Memorial', ['create', 'store']),
+            new Middleware('can:update,App\Models\Memorial', ['edit', 'update']),
+            new Middleware('can:delete,App\Models\Memorial', ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

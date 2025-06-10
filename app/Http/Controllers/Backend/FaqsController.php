@@ -9,10 +9,24 @@ use App\Http\Resources\Backend\FaqsResource;
 use App\Models\FAQ;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class FaqsController extends Controller
+class FaqsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\FAQ', ['index']),
+            new Middleware('can:create,App\Models\FAQ', ['create', 'store']),
+            new Middleware('can:update,App\Models\FAQ', ['edit', 'update']),
+            new Middleware('can:delete,App\Models\FAQ', ['destroy']),
+        ];
+    }
+
+
+
     /**
      * Display a listing of the resource.
      */

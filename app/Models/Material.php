@@ -66,7 +66,13 @@ class Material extends Model
         static::creating(function ($material) {
             $material->created_by = $material->created_by ?: auth()->id();
             $material->slug = $material->slug ?: Str::slug($material->name, '-');
-            $material->sku = $material->sku ?: 'MAT-' . strtoupper(Str::take($material->name, 3)) . '-' . $material->id;
+        });
+
+        static::created(function (self $material) {
+            if (!isset($material->sku)) {
+                $material->sku = $material->sku ?: 'MAT-' . strtoupper(Str::take($material->name, 3)) . '-' . $material->id;
+                $material->saveQuietly();
+            }
         });
 
         static::updating(function ($material) {

@@ -59,7 +59,7 @@ const handleSubmit = () => {
             <div>
                 <Button type="submit" :disabled="!form.isDirty || form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Save Changes
+                    {{ form.processing ? 'Processing...' : 'Save Changes' }}
                 </Button>
             </div>
         </form>

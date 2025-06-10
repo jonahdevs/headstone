@@ -1,5 +1,5 @@
 <script setup>
-import graveStoneImg from '@/assets/images/gravestone.webp';
+import graveStoneImg from '@/assets/images/gravestone.jpg';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import MemorialCard from '@/components/MemorialCard.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -171,7 +171,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                     <template #fallback>
                         <template v-for="i in 4" :key="i">
                             <div
-                                class="relative w-full max-w-72 animate-pulse overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-sm"
+                                class="relative w-full max-w-72 animate-pulse overflow-hidden rounded-md border shadow-xs transition-all hover:shadow-xs"
                             >
                                 <!-- Image placeholder -->
                                 <Skeleton class="aspect-square rounded-t-md" />
@@ -229,7 +229,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                         <Deferred data="testimonies">
                             <template #fallback>
                                 <CarouselItem v-for="i in 4" :key="i" class="h-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                                    <div class="bg-card h-full min-h-36 animate-pulse space-y-3 rounded-md border p-3 shadow-sm">
+                                    <div class="bg-card h-full min-h-36 animate-pulse space-y-3 rounded-md border p-3 shadow-xs">
                                         <!-- Header: Avatar + Name + Verified -->
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">
@@ -264,7 +264,7 @@ const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEn
                                     :key="testimony.id"
                                     class="h-full pb-3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
                                 >
-                                    <div class="bg-card h-full min-h-36 rounded-md border p-3 shadow-sm">
+                                    <div class="bg-card h-full min-h-36 rounded-md border p-3 shadow-xs">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">
                                                 <Avatar>

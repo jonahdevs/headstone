@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { LoaderCircle } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 // Your logic goes here
@@ -14,6 +15,10 @@ const { material } = defineProps({
     material: Object,
 });
 const flash = computed(() => usePage().props.flash);
+const saving = ref(false);
+const publishing = ref(false);
+const unPublishing = ref(false);
+
 const breadcrumbs = [
     {
         title: 'Dashboard',
@@ -38,11 +43,17 @@ const form = useForm({
 });
 
 const updateMaterial = (status) => {
-    form.status = status;
-
-    form.put(route('admin.materials.update', material.data.id), {
+    form.transform((data) => ({
+        ...data,
+        status: status,
+    })).put(route('admin.materials.update', material.data.id), {
         onError: () => {
             toast.error('Failed to update material. Please check the form for errors.');
+        },
+        onFinish: () => {
+            saving.value = false;
+            publishing.value = false;
+            unPublishing.value = false;
         },
     });
 };
@@ -66,11 +77,42 @@ watch(
         <template #pageTitle> Edit Material </template>
 
         <template #pageActions>
-            <Button @click="updateMaterial(form.status)" variant="secondary" :disabled="!form.isDirty || form.processing">Save Changes</Button>
+            <Button
+                @click="
+                    updateMaterial(form.status);
+                    saving = true;
+                "
+                variant="secondary"
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="saving && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ saving && form.processing ? 'Processing...' : 'Save Changes' }}</span></Button
+            >
 
-            <Button @click="updateMaterial('published')" v-if="form.status === 'draft'" :disabled="form.processing"> Publish</Button>
+            <Button
+                @click="
+                    updateMaterial('published');
+                    publishing = true;
+                "
+                v-if="form.status === 'draft'"
+                :disabled="form.processing"
+            >
+                <LoaderCircle v-if="publishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ publishing && form.processing ? 'Processing...' : 'Publish' }}</span></Button
+            >
 
-            <Button @click="updateMaterial('draft')" v-else :disabled="form.processing" variant="destructive"> Un Publish</Button>
+            <Button
+                @click="
+                    updateMaterial('draft');
+                    unPublishing = true;
+                "
+                v-else
+                :disabled="form.processing"
+                variant="destructive"
+            >
+                <LoaderCircle v-if="unPublishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ unPublishing && form.processing ? 'Processing...' : 'Un Publish' }}</span>
+            </Button>
         </template>
 
         <form @submit.prevent="updateMaterial" class="@container max-w-5xl space-y-5">

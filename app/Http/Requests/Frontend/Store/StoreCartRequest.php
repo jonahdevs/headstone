@@ -28,10 +28,10 @@ class StoreCartRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:15'],
             'DOB' => ['required'],
             'DOD' => ['required'],
-            'epitaph' => ['required', 'string', 'max:250'],
+            'epitaph' => ['required', 'string', 'max:32'],
             'instructions' => ['nullable', 'string'],
             'image' => ['nullable', 'image'],
-            'terms' => ['boolean'],
+            'terms' => ['boolean', 'accepted'],
         ];
     }
 }

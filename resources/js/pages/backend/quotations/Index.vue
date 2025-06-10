@@ -219,7 +219,7 @@ onMounted(() => {
                             <Link
                                 :href="route('admin.quotations.show', quote.id)"
                                 class="text-blue-700 hover:underline dark:text-blue-400"
-                                v-if="user.permissions.includes('edit quotations')"
+                                v-if="user.permissions.includes('update quotations')"
                             >
                                 View
                             </Link>

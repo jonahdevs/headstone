@@ -17,8 +17,10 @@ const form = useForm({
 });
 
 const updateReviewStatus = (val) => {
-    form.status = val;
-    form.put(route('admin.reviews.update', review.data.id), {
+    form.transform((data) => ({
+        ...data,
+        status: val,
+    })).put(route('admin.reviews.update', review.data.id), {
         onSuccess: () => {
             router.reload({ only: ['order'] });
         },

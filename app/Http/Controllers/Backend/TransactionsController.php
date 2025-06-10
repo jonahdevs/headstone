@@ -8,10 +8,21 @@ use App\Http\Resources\Backend\TransactionsResource;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class TransactionsController extends Controller
+class TransactionsController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Transaction', ['index']),
+            new Middleware('can:view,transaction', ['show']),
+            new Middleware('can:delete,App\Models\Transaction', ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

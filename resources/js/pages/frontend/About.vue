@@ -1,5 +1,5 @@
 <script setup>
-import about01 from '@/assets/images/about01.webp';
+import about01 from '@/assets/images/about01.jpg';
 import about02 from '@/assets/images/about02.webp';
 import about03 from '@/assets/images/about03.webp';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';

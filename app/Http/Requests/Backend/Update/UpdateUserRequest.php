@@ -12,7 +12,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit users');
+        return auth()->check() && auth()->user()->hasPermissionTo('update users');
     }
 
     /**

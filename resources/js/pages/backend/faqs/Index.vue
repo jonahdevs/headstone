@@ -190,7 +190,7 @@ onMounted(() => {
                             <TableCell>
                                 <div class="flex items-center gap-2">
                                     <Button
-                                        v-if="user.permissions.includes('edit faqs')"
+                                        v-if="user.permissions.includes('update faqs')"
                                         @click="router.visit(route('admin.faqs.edit', faq.id))"
                                         size="sm"
                                     >

@@ -31,11 +31,7 @@ const form = useForm({
 
 const handleSubmit = () => {
     form.post(route('admin.faqs.store'), {
-        onSuccess: () => {
-            form.reset();
-            toast.success('FAQ created successfully!');
-        },
-        onError: (errors) => {
+        onError: () => {
             toast.error('Failed to create FAQ. Please check the errors.');
         },
     });
@@ -66,7 +62,7 @@ const handleSubmit = () => {
             <div>
                 <Button type="submit" :disabled="!form.isDirty || form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Create new Faq
+                    {{ form.processing ? 'Processing...' : 'Create new Faq' }}
                 </Button>
             </div>
         </form>

@@ -12,7 +12,7 @@ class UpdateTagRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit categories');
+        return auth()->check() && auth()->user()->hasPermissionTo('update categories');
     }
 
     /**

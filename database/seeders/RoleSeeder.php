@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $resources = ['users', 'customers', 'orders', 'memorials', 'categories', 'reviews', 'faqs', 'quotations', 'tags', 'materials', 'transactions'];
-        $actions = ['view', 'create', 'edit', 'delete'];
+        $actions = ['viewAny', 'view', 'create', 'update', 'delete'];
 
         $allPermissions = [];
 

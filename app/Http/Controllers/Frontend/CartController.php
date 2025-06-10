@@ -17,7 +17,6 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        // session()->flush();
         return Inertia::render("frontend/Cart", [
             'cart' => Inertia::defer(fn() => auth()->check() ? $this->getUserCartItems() : $this->getGuestCartItems($request)),
         ]);

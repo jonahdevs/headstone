@@ -6,11 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { LoaderCircle } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 // Your logic goes here
 const flash = computed(() => usePage().props.flash);
+const saving = ref(false);
+const publishing = ref(false);
 
 const breadcrumbs = [
     {
@@ -36,11 +39,16 @@ const form = useForm({
 });
 
 const createNewMaterial = (status) => {
-    form.status = status;
-
-    form.post(route('admin.materials.store'), {
+    form.transform((data) => ({
+        ...data,
+        status: status,
+    })).post(route('admin.materials.store'), {
         onError: () => {
             toast.error('Failed to create material. Please check the form for errors.');
+        },
+        onFinish: () => {
+            saving.value = false;
+            publishing.value = false;
         },
     });
 };
@@ -64,8 +72,27 @@ watch(
         <template #pageTitle> Create Material </template>
 
         <template #pageActions>
-            <Button @click="createNewMaterial('draft')" variant="secondary" :disabled="!form.isDirty || form.processing">Save</Button>
-            <Button @click="createNewMaterial('published')" :disabled="!form.isDirty || form.processing">Publish</Button>
+            <Button
+                @click="
+                    createNewMaterial('draft');
+                    saving = true;
+                "
+                variant="secondary"
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="saving && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ saving && form.processing ? 'Saving...' : 'Save' }}</span>
+            </Button>
+            <Button
+                @click="
+                    createNewMaterial('published');
+                    publishing = true;
+                "
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="publishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ publishing && form.processing ? 'Publishing...' : 'Publish' }}</span>
+            </Button>
         </template>
 
         <form @submit.prevent="createNewMaterial" class="@container max-w-5xl space-y-5">

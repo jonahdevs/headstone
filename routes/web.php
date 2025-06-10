@@ -120,7 +120,7 @@ Route::controller(CheckoutController::class)->middleware('auth')->group(function
 
 // customers routes
 
-Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:customer'])->prefix('customer')->name('customer.')->group(function () {
 
     Route::controller(AccountController::class)->group(function () {
         Route::get('account', 'index')->name('account');
@@ -142,7 +142,7 @@ Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer
     });
 });
 
-Route::middleware(['auth', 'role:admin|manager'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('dashboard', 'index')->name('dashboard');
     });

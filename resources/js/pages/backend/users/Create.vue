@@ -263,9 +263,9 @@ watch(
             <div class="mt-5 flex items-center gap-5">
                 <Button type="submit" :disabled="!form.isDirty || form.processing" class="min-w-40">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    <span v-if="!form.processing"> {{ form.processing ? 'Submitting...' : 'Create New User' }} </span>
+                    <span> {{ form.processing ? 'Submitting...' : 'Create New User' }} </span>
                 </Button>
             </div>
-        </form></AppLayout
-    >
+        </form>
+    </AppLayout>
 </template>

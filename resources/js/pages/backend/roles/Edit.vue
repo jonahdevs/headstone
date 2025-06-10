@@ -24,8 +24,6 @@ onMounted(() => {
 
 // Submit updated permissions
 const handleSubmit = () => {
-    console.log(form.permissions);
-
     form.put(route('admin.roles.update', role.data.id), {
         preserveScroll: true,
     });
@@ -57,11 +55,11 @@ watch(
             Edit <span class="capitalize">{{ role.data.name }}</span>
         </template>
         <form @submit.prevent="handleSubmit" class="max-w-5xl space-y-6">
-            <section class="divide-y">
-                <div v-for="(actions, resource) in groupedPermissions" :key="resource" class="grid grid-cols-2 py-3">
-                    <h2 class="mb-2 capitalize">{{ resource }}</h2>
+            <section class="@container divide-y">
+                <div v-for="(actions, resource) in groupedPermissions" :key="resource" class="grid py-3 @md:grid-cols-3">
+                    <h2 class="mb-2 capitalize @md:col-span-1">{{ resource }}</h2>
 
-                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div class="grid gap-3 @md:col-span-2 @md:grid-cols-2 @xl:grid-cols-5">
                         <div v-for="(action, i) in actions" :key="i" class="flex items-center space-x-2">
                             <div class="flex h-6 shrink-0 items-center">
                                 <div class="group grid size-4 grid-cols-1">
@@ -105,7 +103,7 @@ watch(
 
             <Button type="submit" :disabled="!form.isDirty || form.processing" class="min-w-44">
                 <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                <span v-else> {{ form.processing ? 'Submitting...' : 'Update Role' }}</span>
+                <span> {{ form.processing ? 'Submitting...' : 'Update Role' }}</span>
             </Button>
         </form>
     </AppLayout>

@@ -10,11 +10,22 @@ use App\Http\Resources\Backend\MaterialsResource;
 use App\Models\Material;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class MaterialsController extends Controller
+class MaterialsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Material', ['index']),
+            new Middleware('can:create,App\Models\Material', ['create', 'store']),
+            new Middleware('can:update,App\Models\Material', ['edit', 'update']),
+            new Middleware('can:delete,App\Models\Material', ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

@@ -12,7 +12,7 @@ class UpdateMaterialRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit materials');
+        return auth()->check() && auth()->user()->hasPermissionTo('update materials');
     }
 
     /**

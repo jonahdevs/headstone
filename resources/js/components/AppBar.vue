@@ -90,7 +90,7 @@ const handleSearch = () => {
 
     <header class="bg-primary-foreground">
         <div class="@container/nav mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 xl:px-0">
-            <Link :href="route('home')" class="items-center gap-2 py-5 max-lg:hidden">
+            <Link :href="route('home')" class="flex items-center gap-2 py-5 max-lg:hidden">
                 <AppLogo />
             </Link>
 

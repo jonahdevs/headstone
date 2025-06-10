@@ -85,7 +85,18 @@ const form = useForm({
 });
 
 const fonts = ['nunito', 'amatic', 'pacifico', 'dancing', 'satisfy'];
-
+const epitaphs = [
+    'Forever in our hearts',
+    'Gone but not forgotten',
+    'Rest in eternal peace',
+    'Beloved and remembered',
+    'Always in our thoughts',
+    "In God's loving arms",
+    'A life well lived',
+    'Peace be with you',
+    'Until we meet again',
+    'Loved beyond words',
+];
 const df = new DateFormatter('en-US', {
     dateStyle: 'long',
 });
@@ -188,7 +199,7 @@ const handleSubmit = (memorialId) => {
                         <DialogTrigger as-child>
                             <Button type="button">Add to Cart </Button>
                         </DialogTrigger>
-                        <DialogContent class="max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] p-0 sm:max-w-3xl">
+                        <DialogContent class="max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] p-0 sm:max-w-3xl lg:max-w-4xl">
                             <DialogHeader class="p-4">
                                 <!-- Heading and Description -->
                                 <div class="space-y-1">
@@ -216,16 +227,40 @@ const handleSubmit = (memorialId) => {
                                     <div class="grid grid-cols-1 gap-4 @xl/form:grid-cols-2">
                                         <!-- first name -->
                                         <div class="space-y-2">
-                                            <Label for="first_name">First Name</Label>
-                                            <Input name="first_name" id="first_name" v-model="form.first_name" />
+                                            <div class="flex flex-wrap items-center gap-2 gap-y-1">
+                                                <Label for="first_name" class="flex-1">First Name</Label>
+                                                <span class="text-muted-foreground text-xs">
+                                                    {{ Math.max(0, 15 - (form.first_name?.length || 0)) }} Characters Remaining
+                                                </span>
+                                            </div>
+                                            <Input
+                                                name="first_name"
+                                                id="first_name"
+                                                v-model="form.first_name"
+                                                :class="{
+                                                    'border-red-500 text-red-500': form.first_name.length > 15,
+                                                }"
+                                            />
                                             <p class="text-muted-foreground text-xs">This will be engraved as the first name.</p>
                                             <InputError :message="form.errors.first_name" />
                                         </div>
 
                                         <!-- last name -->
                                         <div class="space-y-2">
-                                            <Label for="last_name">Last Name</Label>
-                                            <Input name="last_name" id="last_name" v-model="form.last_name" />
+                                            <div class="flex flex-wrap items-center gap-2 gap-y-1">
+                                                <Label for="last_name" class="flex-1">Last Name</Label>
+                                                <span class="text-muted-foreground text-xs">
+                                                    {{ Math.max(0, 15 - (form.last_name?.length || 0)) }} Characters Remaining
+                                                </span>
+                                            </div>
+                                            <Input
+                                                name="last_name"
+                                                id="last_name"
+                                                v-model="form.last_name"
+                                                :class="{
+                                                    'border-red-500 text-red-500': form.last_name.length > 15,
+                                                }"
+                                            />
                                             <p class="text-muted-foreground text-xs">This will be engraved as the last name.</p>
                                             <InputError :message="form.errors.last_name" />
                                         </div>
@@ -294,18 +329,29 @@ const handleSubmit = (memorialId) => {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="custom">Custom</SelectItem>
-                                                <SelectItem value="In Loving Memory">In Loving Memory</SelectItem>
-                                                <SelectItem value="Forever in Our Hearts">Forever in Our Hearts</SelectItem>
-                                                <SelectItem value="Beloved Father/Mother">Beloved Father/Mother</SelectItem>
-                                                <SelectItem value="Rest in Peace">Rest in Peace</SelectItem>
+                                                <SelectItem v-for="(epitaph, index) in epitaphs" :key="index" :value="epitaph">{{
+                                                    epitaph
+                                                }}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <InputError :message="form.errors.epitaph" />
                                     </div>
 
                                     <div class="space-y-2" v-if="showCustomEpitaph">
-                                        <Label for="epitaph">Write Epitaph</Label>
-                                        <Textarea name="epitaph" id="epitaph" v-model="form.epitaph" />
+                                        <div class="flex flex-wrap items-center gap-2 gap-y-1">
+                                            <Label for="epitaph" class="flex-1">Write Epitaph</Label>
+                                            <span class="text-muted-foreground text-xs">
+                                                {{ Math.max(0, 32 - (form.epitaph?.length || 0)) }} Characters Remaining
+                                            </span>
+                                        </div>
+                                        <Textarea
+                                            name="epitaph"
+                                            id="epitaph"
+                                            v-model="form.epitaph"
+                                            :class="{
+                                                'border-red-500 text-red-500': form.epitaph.length > 32,
+                                            }"
+                                        />
                                         <InputError :message="form.errors.epitaph" />
                                     </div>
 
@@ -315,8 +361,8 @@ const handleSubmit = (memorialId) => {
                                             <label
                                                 v-for="(font, index) in fonts"
                                                 :key="index"
-                                                class="bg-secondary text-secondary-foreground cursor-pointer rounded-xl border px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md"
-                                                :class="form.font === font ? 'border-primary text-primary font-medium' : 'border'"
+                                                class="bg-secondary text-secondary-foreground cursor-pointer rounded-xl border-2 px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md"
+                                                :class="form.font === font ? 'border-primary text-primary font-medium' : ''"
                                                 :style="{ fontFamily: font }"
                                             >
                                                 <input type="radio" name="font" class="hidden" :value="font" v-model="form.font" />
@@ -365,11 +411,14 @@ const handleSubmit = (memorialId) => {
                                         <InputError :message="form.errors.instructions" />
                                     </div>
 
-                                    <div class="flex items-center space-x-2">
-                                        <Checkbox id="terms" v-model="form.terms" />
-                                        <label for="terms" class="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                            By clicking here, I agree that the information above is true, accurate and ready for production
-                                        </label>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-2">
+                                            <Checkbox id="terms" v-model="form.terms" />
+                                            <label for="terms" class="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                By clicking here, I agree that the information above is true, accurate and ready for production
+                                            </label>
+                                        </div>
+                                        <InputError :message="form.errors.terms" />
                                     </div>
                                 </section>
                             </form>
@@ -377,7 +426,7 @@ const handleSubmit = (memorialId) => {
                             <DialogFooter class="p-6 pt-0">
                                 <Button @click="handleSubmit(memorial.data.id)" class="min-w-28" :disabled="form.processing">
                                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                                    Add to Cart
+                                    {{ form.processing ? 'Processing...' : 'Add to Cart' }}
                                 </Button>
                             </DialogFooter>
                         </DialogContent>

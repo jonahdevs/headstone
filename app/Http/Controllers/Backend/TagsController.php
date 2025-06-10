@@ -10,11 +10,22 @@ use App\Http\Resources\Backend\TagsResource;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class TagsController extends Controller
+class TagsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Tag', ['index']),
+            new Middleware('can:create,App\Models\Tag', ['create', 'store']),
+            new Middleware('can:update,App\Models\Tag', ['edit', 'update']),
+            new Middleware('can:delete,App\Models\Tag', ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

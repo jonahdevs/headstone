@@ -11,7 +11,7 @@ class UpdateQuotationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermissionTo('edit quotations');
+        return auth()->check() && auth()->user()->hasPermissionTo('update quotations');
     }
 
     /**

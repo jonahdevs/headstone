@@ -1,5 +1,5 @@
 <script setup>
-import graveStoneImg from '@/assets/images/gravestone.webp';
+import graveStoneImg from '@/assets/images/gravestone.jpg';
 import { Link, usePage } from '@inertiajs/vue3';
 
 // Your logic goes here

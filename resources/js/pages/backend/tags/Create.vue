@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { LoaderCircle } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 // Your logic goes here
@@ -14,6 +15,9 @@ const { tag } = defineProps({
     tag: Object,
 });
 const flash = computed(() => usePage().props.flash);
+const saving = ref(false);
+const publishing = ref(false);
+
 const breadcrumbs = [
     {
         title: 'Dashboard',
@@ -37,11 +41,16 @@ const form = useForm({
 });
 
 const createNewTag = (status) => {
-    form.status = status;
-
-    form.post(route('admin.tags.store'), {
+    form.transform((data) => ({
+        ...data,
+        status: status,
+    })).post(route('admin.tags.store'), {
         onError: () => {
             toast.error('Failed to create tag. Please check the form for errors.');
+        },
+        onFinish: () => {
+            saving.value = false;
+            publishing.value = false;
         },
     });
 };
@@ -65,8 +74,27 @@ watch(
         <template #pageTitle> Create Tag </template>
 
         <template #pageActions>
-            <Button @click="createNewTag('draft')" variant="secondary" :disabled="!form.isDirty || form.processing">Save</Button>
-            <Button @click="createNewTag('published')" :disabled="!form.isDirty || form.processing">Publish</Button>
+            <Button
+                @click="
+                    createNewTag('draft');
+                    saving = true;
+                "
+                variant="secondary"
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="saving && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ saving && form.processing ? 'Saving...' : 'Save' }}</span></Button
+            >
+            <Button
+                @click="
+                    createNewTag('published');
+                    publishing = true;
+                "
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="publishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ publishing && form.processing ? 'Processing...' : 'Publish' }}</span></Button
+            >
         </template>
 
         <form @submit.prevent="createNewTag" class="@container max-w-5xl space-y-5">

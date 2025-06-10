@@ -9,10 +9,22 @@ use App\Http\Resources\Backend\Show\ShowQuotationResource;
 use App\Models\Quotation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class QuotationsController extends Controller
+class QuotationsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,App\Models\Quotation', ['index']),
+            new Middleware('can:view,App\Models\Quotation', ['show']),
+            new Middleware('can:update,App\Models\Quotation', ['update']),
+            new Middleware('can:delete,App\Models\Quotation', ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

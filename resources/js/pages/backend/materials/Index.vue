@@ -222,7 +222,7 @@ onMounted(() => {
                         <TableCell>
                             <div class="flex items-center gap-3">
                                 <Button
-                                    v-if="user.permissions.includes('edit materials')"
+                                    v-if="user.permissions.includes('update materials')"
                                     size="sm"
                                     @click="router.visit(route('admin.materials.edit', material.id))"
                                 >

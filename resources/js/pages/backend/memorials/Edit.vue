@@ -24,7 +24,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import { Deferred, Head, useForm, usePage } from '@inertiajs/vue3';
 import { watchOnce } from '@vueuse/core';
-import { Check, ChevronsUpDown, Search, X } from 'lucide-vue-next';
+import { Check, ChevronsUpDown, LoaderCircle, Search, X } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
@@ -41,6 +41,9 @@ const imagesPreview = ref([]);
 const emblaMainApi = ref(null);
 const emblaThumbnailApi = ref(null);
 const selectedIndex = ref(0);
+const saving = ref(false);
+const publishing = ref(false);
+const unPublishing = ref(false);
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin/dashboard' },
@@ -117,17 +120,20 @@ const handleGalleryImages = (event) => {
 };
 
 const handleSubmit = async (status) => {
-    form.status = status;
-
     form.transform((data) => ({
         ...data,
         _method: 'put',
+        status: status,
     })).post(route('admin.memorials.update', props.memorial.data.id), {
         forceFormData: true,
         preserveScroll: true,
         onError: (error) => {
-            console.log(error);
             toast.error('Something went wrong. Please check the form and try again.');
+        },
+        onFinish: () => {
+            saving.value = false;
+            publishing.value = false;
+            unPublishing.value = false;
         },
     });
 };
@@ -208,11 +214,42 @@ watch(
         <template #pageTitle> Edit Memorial </template>
 
         <template #pageActions>
-            <Button @click="handleSubmit(form.status)" variant="secondary" :disabled="!form.isDirty || form.processing">Save</Button>
+            <Button
+                @click="
+                    handleSubmit(form.status);
+                    saving = true;
+                "
+                variant="secondary"
+                :disabled="!form.isDirty || form.processing"
+            >
+                <LoaderCircle v-if="saving && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ saving && form.processing ? 'Processing...' : 'Save Changes' }}</span>
+            </Button>
 
-            <Button v-if="form.status === 'draft'" @click="handleSubmit('published')" :disabled="form.processing">Publish</Button>
+            <Button
+                v-if="form.status === 'draft'"
+                @click="
+                    handleSubmit('published');
+                    publishing = true;
+                "
+                :disabled="form.processing"
+            >
+                <LoaderCircle v-if="publishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ publishing && form.processing ? 'Processing...' : 'Publish' }}</span>
+            </Button>
 
-            <Button v-else @click="handleSubmit('draft')" :disabled="form.processing" variant="destructive"> Un Publish</Button>
+            <Button
+                v-else
+                @click="
+                    handleSubmit('draft');
+                    unPublishing = true;
+                "
+                :disabled="form.processing"
+                variant="destructive"
+            >
+                <LoaderCircle v-if="unPublishing && form.processing" class="h-4 w-4 animate-spin" />
+                <span>{{ unPublishing && form.processing ? 'Processing...' : 'Un Publish' }}</span>
+            </Button>
         </template>
 
         <section class="@container">
